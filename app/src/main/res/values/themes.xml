@@ -1,0 +1,4 @@
+<resources>
+    <!-- Base theme; Compose takes over from here via UneswaNavTheme -->
+    <style name="Theme.UneswaNav" parent="android:Theme.Material.Light.NoActionBar" />
+</resources>

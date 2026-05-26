@@ -1,0 +1,148 @@
+[
+  {
+    "id": "mph",
+    "fullName": "Multi-Purpose Hall",
+    "abbreviation": "MPH",
+    "description": "The largest indoor venue on campus, used for graduation ceremonies, large lectures, and major events.",
+    "photos": ["mph_exterior", "mph_entrance"],
+    "approaches": [
+      {
+        "from": "Main Gate",
+        "steps": [
+          "Enter through the main gate and walk straight along the main road.",
+          "Keep walking past the Admin block — you will see it on your left.",
+          "Look for the large hall with the distinctive roof ahead of you on the right.",
+          "The entrance to the MPH faces the main road."
+        ]
+      },
+      {
+        "from": "Sports Emporium",
+        "steps": [
+          "With the Sports Emporium behind you, walk toward the main road.",
+          "Turn left onto the main road.",
+          "The MPH will be visible on your left after about two minutes of walking."
+        ]
+      }
+    ]
+  },
+  {
+    "id": "se",
+    "fullName": "Sports Emporium",
+    "abbreviation": "SE",
+    "description": "The main sports facility on campus, housing the gym, indoor courts, and changing rooms.",
+    "photos": ["se_exterior", "se_entrance"],
+    "approaches": [
+      {
+        "from": "Main Gate",
+        "steps": [
+          "Enter through the main gate and follow the main road.",
+          "Take the first major turning on the left after the Admin block.",
+          "Follow that road downhill — the Sports Emporium is the large building at the bottom."
+        ]
+      },
+      {
+        "from": "Commerce Building",
+        "steps": [
+          "From the Commerce Building, walk toward the open field.",
+          "Cross the field heading south.",
+          "The Sports Emporium is visible at the far end of the field."
+        ]
+      }
+    ]
+  },
+  {
+    "id": "com",
+    "fullName": "Commerce Building",
+    "abbreviation": "Com",
+    "description": "Houses the Faculty of Commerce, with lecture rooms and staff offices for business-related departments.",
+    "photos": ["com_exterior", "com_entrance"],
+    "approaches": [
+      {
+        "from": "Main Gate",
+        "steps": [
+          "Enter through the main gate and walk along the main road.",
+          "After passing the Admin block, take the path on your right.",
+          "The Commerce Building is the large rectangular building directly ahead."
+        ]
+      }
+    ]
+  },
+  {
+    "id": "finance",
+    "fullName": "Finance Office",
+    "abbreviation": "Finance",
+    "description": "Handles fee payments, financial clearance, and bursary queries. Located inside the Admin block.",
+    "photos": ["admin_block_exterior", "finance_office_door"],
+    "approaches": [
+      {
+        "from": "Main Gate",
+        "steps": [
+          "Enter through the main gate and walk straight ahead.",
+          "The Admin block is the first major building on your left — you cannot miss it.",
+          "Enter through the main Admin block doors.",
+          "Turn right inside the entrance. The Finance Office is the second door on the right, marked with a sign."
+        ]
+      }
+    ]
+  },
+  {
+    "id": "chapel",
+    "fullName": "Chapel",
+    "abbreviation": "Chapel",
+    "description": "The university chapel, used for religious services and sometimes official ceremonies.",
+    "photos": ["chapel_exterior"],
+    "approaches": [
+      {
+        "from": "Main Gate",
+        "steps": [
+          "Enter through the main gate and walk along the main road.",
+          "Pass the Admin block on your left and continue walking.",
+          "The Chapel is visible on the right side of the road — look for the cross on the building."
+        ]
+      },
+      {
+        "from": "Multi-Purpose Hall",
+        "steps": [
+          "Stand facing the MPH entrance.",
+          "Turn right and walk along the path beside the MPH.",
+          "The Chapel is a short walk ahead, recognisable by the cross on its facade."
+        ]
+      }
+    ]
+  },
+  {
+    "id": "wardens",
+    "fullName": "Warden's Office",
+    "abbreviation": "Warden",
+    "description": "Handles student accommodation matters, hostel allocation, and residence-related complaints.",
+    "photos": ["wardens_office_exterior"],
+    "approaches": [
+      {
+        "from": "Main Gate",
+        "steps": [
+          "Enter through the main gate and walk past the Admin block.",
+          "Take the road that leads toward the student hostels.",
+          "The Warden's Office is a smaller standalone building near the entrance to the hostel area — look for the sign above the door."
+        ]
+      }
+    ]
+  },
+  {
+    "id": "peer_counselling",
+    "fullName": "Peer Counselling Office",
+    "abbreviation": "Peer Counselling",
+    "description": "Provides confidential peer support and counselling services for students. Located near Lomawa hostel.",
+    "photos": ["lomawa_hostel", "peer_counselling_door"],
+    "approaches": [
+      {
+        "from": "Main Gate",
+        "steps": [
+          "Enter through the main gate and walk toward the hostel area.",
+          "Head toward Lomawa hostel — it is the hostel block on the eastern side of the residence area.",
+          "The Peer Counselling Office is in the small building directly adjacent to the Lomawa hostel entrance.",
+          "Look for the blue door with the Peer Counselling sign."
+        ]
+      }
+    ]
+  }
+]

@@ -1,8 +1,13 @@
 package com.uneswa.nav.data
 
+data class Step(
+    val text: String,
+    val image: String? = null // name of image in assets/drawable, no extension
+)
+
 data class Approach(
     val from: String,
-    val steps: Array<String>
+    val steps: Array<Step>
 )
 
 data class Location(

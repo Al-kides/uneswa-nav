@@ -14,7 +14,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import coil.compose.AsyncImage
+import coil.compose.SubcomposeAsyncImage
 import coil.decode.ImageDecoderDecoder
 import coil.request.ImageRequest
 
@@ -118,50 +118,85 @@ fun DirectionsScreen(vm: DirectionsVM, onBack: () -> Unit) {
 
 @Composable
 private fun Photo(name: String) {
-    val ctx   = LocalContext.current
+    val ctx = LocalContext.current
     val resId = ctx.resources.getIdentifier(name, "drawable", ctx.packageName)
+    val assetPath = "file:///android_asset/drawable/$name.heic"
 
     Card(
         modifier  = Modifier.size(width = 240.dp, height = 160.dp),
         elevation = CardDefaults.cardElevation(2.dp)
     ) {
-        if (resId != 0) {
-            AsyncImage(
-                model = ImageRequest.Builder(ctx)
-                    .data(resId)
-                    .decoderFactory(ImageDecoderDecoder.Factory()) // HEIC on API 28+
-                    .crossfade(true)
-                    .build(),
-                contentDescription = name,
-                contentScale       = ContentScale.Crop,
-                modifier           = Modifier.fillMaxSize()
-            )
-        } else {
-            Box(Modifier.fillMaxSize(), Alignment.Center) {
-                Text("📷 Photo coming soon",
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant)
+        SubcomposeAsyncImage(
+            model = ImageRequest.Builder(ctx)
+                .data(if (resId != 0) resId else assetPath)
+                .decoderFactory(ImageDecoderDecoder.Factory())
+                .crossfade(true)
+                .build(),
+            contentDescription = name,
+            contentScale       = ContentScale.Crop,
+            modifier           = Modifier.fillMaxSize(),
+            error              = {
+                Box(Modifier.fillMaxSize(), Alignment.Center) {
+                    Text("📷 Photo coming soon",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant)
+                }
             }
-        }
+        )
     }
 }
 
 @Composable
-private fun Step(n: Int, text: String) {
-    Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.Top) {
-        Surface(
-            shape    = MaterialTheme.shapes.extraLarge,
-            color    = MaterialTheme.colorScheme.primary,
-            modifier = Modifier.size(32.dp)
-        ) {
-            Box(Modifier.fillMaxSize(), Alignment.Center) {
-                Text("$n", style = MaterialTheme.typography.labelLarge,
-                    fontWeight = FontWeight.Bold,
-                    color      = MaterialTheme.colorScheme.onPrimary)
+private fun Step(n: Int, step: com.uneswa.nav.data.Step) {
+    Column(Modifier.fillMaxWidth()) {
+        Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.Top) {
+            Surface(
+                shape    = MaterialTheme.shapes.extraLarge,
+                color    = MaterialTheme.colorScheme.primary,
+                modifier = Modifier.size(32.dp)
+            ) {
+                Box(Modifier.fillMaxSize(), Alignment.Center) {
+                    Text("$n", style = MaterialTheme.typography.labelLarge,
+                        fontWeight = FontWeight.Bold,
+                        color      = MaterialTheme.colorScheme.onPrimary)
+                }
+            }
+            Spacer(Modifier.width(12.dp))
+            Text(step.text, style = MaterialTheme.typography.bodyLarge,
+                modifier = Modifier.padding(top = 4.dp))
+        }
+
+        if (step.image != null) {
+            Spacer(Modifier.height(12.dp))
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 44.dp)
+                    .height(200.dp),
+                elevation = CardDefaults.cardElevation(1.dp)
+            ) {
+                val ctx = LocalContext.current
+                val resId = ctx.resources.getIdentifier(step.image, "drawable", ctx.packageName)
+                val assetPath = "file:///android_asset/drawable/${step.image}.heic"
+
+                SubcomposeAsyncImage(
+                    model = ImageRequest.Builder(ctx)
+                        .data(if (resId != 0) resId else assetPath)
+                        .decoderFactory(ImageDecoderDecoder.Factory())
+                        .crossfade(true)
+                        .build(),
+                    contentDescription = null,
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier.fillMaxSize(),
+                    error = {
+                        Box(Modifier.fillMaxSize(), Alignment.Center) {
+                            Text("📷 Step photo",
+                                style = MaterialTheme.typography.bodySmall,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant)
+                        }
+                    }
+                )
             }
         }
-        Spacer(Modifier.width(12.dp))
-        Text(text, style = MaterialTheme.typography.bodyLarge,
-            modifier = Modifier.padding(top = 4.dp))
     }
 }

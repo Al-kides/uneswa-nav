@@ -1,7 +1,6 @@
 package com.uneswa.nav.data
 
 // Standard DP Levenshtein — O(m*n) time, O(m*n) space.
-// Fine for short query strings; not worth optimising here.
 private fun lev(a: String, b: String): Int {
     val m = a.length; val n = b.length
     val d = Array(m + 1) { IntArray(n + 1) }
@@ -13,8 +12,6 @@ private fun lev(a: String, b: String): Int {
     return d[m][n]
 }
 
-// Substring check first (fast path), then sliding-window Levenshtein.
-// Threshold: 1 edit per 4 chars — tight enough to avoid false positives.
 private fun matches(q: String, target: String): Boolean {
     if (target.contains(q)) return true
     val thr = (q.length / 4).coerceAtLeast(1)
@@ -41,8 +38,8 @@ class LocationRepo {
                 Approach(
                     from  = "Main Gate",
                     steps = arrayOf(
-                        "Enter through the main gate.",
-                        "Turn immediately left — IDE is the first building, right beside the sports ground."
+                        Step("Enter through the main gate.", "ide_1"),
+                        Step("Turn immediately left — IDE is the first building, right beside the sports ground.", "ide_4")
                     )
                 )
             )
@@ -59,15 +56,15 @@ class LocationRepo {
                 Approach(
                     from  = "Main Gate",
                     steps = arrayOf(
-                        "Enter through the main gate and walk toward the red pillars.",
-                        "Follow the pillar path — Engineering is on your right before the Sports Emporium."
+                        Step("Enter through the main gate and walk toward the red pillars.", "engineering_1"),
+                        Step("Follow the pillar path — Engineering is on your right before the Sports Emporium.", "engineering_2")
                     )
                 ),
                 Approach(
                     from  = "Admin",
                     steps = arrayOf(
-                        "From Admin, walk toward the red pillars.",
-                        "Follow the path — Engineering comes before the Sports Emporium."
+                        Step("From Admin, walk toward the red pillars.", "engineering_1"),
+                        Step("Follow the path — Engineering comes before the Sports Emporium.", "engineering_2")
                     )
                 )
             )
@@ -84,16 +81,16 @@ class LocationRepo {
                 Approach(
                     from  = "Main Gate",
                     steps = arrayOf(
-                        "Enter through the main gate and follow the red pillar path.",
-                        "Walk past the Engineering block.",
-                        "The Sports Emporium is the large building at the end of the pillar path."
+                        Step("Enter through the main gate and follow the red pillar path."),
+                        Step("Walk past the Engineering block."),
+                        Step("The Sports Emporium is the large building at the end of the pillar path.")
                     )
                 ),
                 Approach(
                     from  = "Chapel",
                     steps = arrayOf(
-                        "With the Chapel behind you, walk back along the path.",
-                        "The Sports Emporium is the building just before Engineering."
+                        Step("With the Chapel behind you, walk back along the path."),
+                        Step("The Sports Emporium is the building just before Engineering.")
                     )
                 )
             )
@@ -110,8 +107,8 @@ class LocationRepo {
                 Approach(
                     from  = "Main Gate",
                     steps = arrayOf(
-                        "Follow the red pillar path past Engineering to the Sports Emporium.",
-                        "The Butchery is the open field immediately beside the Emporium."
+                        Step("Follow the red pillar path past Engineering to the Sports Emporium."),
+                        Step("The Butchery is the open field immediately beside the Emporium.")
                     )
                 )
             )
@@ -128,16 +125,16 @@ class LocationRepo {
                 Approach(
                     from  = "Main Gate",
                     steps = arrayOf(
-                        "Enter and follow the red pillar path.",
-                        "Pass Engineering, then pass the Sports Emporium.",
-                        "The Chapel is the next building — recognisable by the cross on its facade."
+                        Step("Enter and follow the red pillar path."),
+                        Step("Pass Engineering, then pass the Sports Emporium."),
+                        Step("The Chapel is the next building — recognisable by the cross on its facade.")
                     )
                 ),
                 Approach(
                     from  = "Sports Emporium",
                     steps = arrayOf(
-                        "Continue along the path past the Emporium.",
-                        "The Chapel is a short walk ahead."
+                        Step("Continue along the path past the Emporium."),
+                        Step("The Chapel is a short walk ahead.")
                     )
                 )
             )
@@ -154,15 +151,15 @@ class LocationRepo {
                 Approach(
                     from  = "Main Gate",
                     steps = arrayOf(
-                        "Enter through the main gate and walk straight ahead along the main road.",
-                        "Admin is the large signed building on your right."
+                        Step("Enter through the main gate and walk straight ahead along the main road."),
+                        Step("Admin is the large signed building on your right.")
                     )
                 ),
                 Approach(
                     from  = "Library",
                     steps = arrayOf(
-                        "Face the Library entrance and turn right.",
-                        "Admin is immediately to your right."
+                        Step("Face the Library entrance and turn right."),
+                        Step("Admin is immediately to your right.")
                     )
                 )
             )
@@ -179,15 +176,15 @@ class LocationRepo {
                 Approach(
                     from  = "Admin",
                     steps = arrayOf(
-                        "Walk out of Admin — Finance is a stone's throw away.",
-                        "Follow the signs for Finance / Cash Office."
+                        Step("Walk out of Admin — Finance is a stone's throw away."),
+                        Step("Follow the signs for Finance / Cash Office.")
                     )
                 ),
                 Approach(
                     from  = "Main Gate",
                     steps = arrayOf(
-                        "Walk to the Admin block first.",
-                        "Finance is a short signed walk from there."
+                        Step("Walk to the Admin block first."),
+                        Step("Finance is a short signed walk from there.")
                     )
                 )
             )
@@ -204,9 +201,9 @@ class LocationRepo {
                 Approach(
                     from  = "Admin",
                     steps = arrayOf(
-                        "Walk straight past the Finance Office.",
-                        "After about 15 seconds turn right.",
-                        "The ref bench area is right there, parallel to Admin. Bamboo is behind it."
+                        Step("Walk straight past the Finance Office."),
+                        Step("After about 15 seconds turn right."),
+                        Step("The ref bench area is right there, parallel to Admin. Bamboo is behind it.")
                     )
                 )
             )
@@ -223,15 +220,15 @@ class LocationRepo {
                 Approach(
                     from  = "Main Gate",
                     steps = arrayOf(
-                        "Walk straight in from the gate.",
-                        "The Library is the large green-roofed building at the centre — visible from the main road."
+                        Step("Walk straight in from the gate."),
+                        Step("The Library is the large green-roofed building at the centre — visible from the main road.")
                     )
                 ),
                 Approach(
                     from  = "Admin",
                     steps = arrayOf(
-                        "Face Admin and turn left.",
-                        "The Library is directly ahead."
+                        Step("Face Admin and turn left."),
+                        Step("The Library is directly ahead.")
                     )
                 )
             )
@@ -251,16 +248,16 @@ class LocationRepo {
                 Approach(
                     from  = "Main Gate",
                     steps = arrayOf(
-                        "Enter and walk along the main road.",
-                        "Commerce is in the science/engineering cluster on the right side of campus.",
-                        "Follow G-block signs. Ground floor is G.001; upper rooms are numbered upward."
+                        Step("Enter and walk along the main road.", "commerce_1"),
+                        Step("Commerce is in the science/engineering cluster on the right side of campus."),
+                        Step("Follow G-block signs. Ground floor is G.001; upper rooms are numbered upward.", "commerce_3")
                     )
                 ),
                 Approach(
                     from  = "Admin",
                     steps = arrayOf(
-                        "From Admin, head toward the science and engineering side.",
-                        "Commerce (G-block) is in that cluster."
+                        Step("From Admin, head toward the science and engineering side.", "commerce_1"),
+                        Step("Commerce (G-block) is in that cluster.", "commerce_3")
                     )
                 )
             )
@@ -277,16 +274,16 @@ class LocationRepo {
                 Approach(
                     from  = "Main Gate",
                     steps = arrayOf(
-                        "Enter and head to the left side of campus.",
-                        "Walk toward the MFAC building — N classes are right next to it.",
-                        "Rooms are labelled N1, N2, N3 on the doors."
+                        Step("Enter and head to the left side of campus.", "n_class_1"),
+                        Step("Walk toward the MFAC building — N classes are right next to it."),
+                        Step("Rooms are labelled N1, N2, N3 on the doors.", "n_class_5")
                     )
                 ),
                 Approach(
                     from  = "Library",
                     steps = arrayOf(
-                        "From the Library head left (west) toward the Warden's area.",
-                        "N classes are the classroom block beside MFAC."
+                        Step("From the Library head left (west) toward the Warden's area.", "n_class_1"),
+                        Step("N classes are the classroom block beside MFAC.", "n_class_5")
                     )
                 )
             )
@@ -306,14 +303,14 @@ class LocationRepo {
                 Approach(
                     from  = "Main Gate",
                     steps = arrayOf(
-                        "Enter and head left toward the N-area / Warden's cluster.",
-                        "MFAC is the newer building there, next to the N-block girls hostel."
+                        Step("Enter and head left toward the N-area / Warden's cluster."),
+                        Step("MFAC is the newer building there, next to the N-block girls hostel.")
                     )
                 ),
                 Approach(
                     from  = "N Classes",
                     steps = arrayOf(
-                        "MFAC is immediately adjacent to the N classes building."
+                        Step("MFAC is immediately adjacent to the N classes building.")
                     )
                 )
             )
@@ -330,15 +327,15 @@ class LocationRepo {
                 Approach(
                     from  = "Main Gate",
                     steps = arrayOf(
-                        "Enter and head left toward the N-area.",
-                        "Walk past or alongside N classes and MFAC.",
-                        "The Warden's Office is in that same cluster."
+                        Step("Enter and head left toward the N-area.", "warden_1"),
+                        Step("Walk past or alongside N classes and MFAC."),
+                        Step("The Warden's Office is in that same cluster.", "warden_6")
                     )
                 ),
                 Approach(
                     from  = "N Classes",
                     steps = arrayOf(
-                        "From N classes, the Warden's Office is a short walk in the same cluster."
+                        Step("From N classes, the Warden's Office is a short walk in the same cluster.", "warden_6")
                     )
                 )
             )
@@ -355,15 +352,15 @@ class LocationRepo {
                 Approach(
                     from  = "Warden's Office",
                     steps = arrayOf(
-                        "The clinic is the building directly next to the Warden's Office.",
-                        "Look for the red cross sign."
+                        Step("The clinic is the building directly next to the Warden's Office."),
+                        Step("Look for the red cross sign.")
                     )
                 ),
                 Approach(
                     from  = "Main Gate",
                     steps = arrayOf(
-                        "Head left into the N-area cluster.",
-                        "Find the Warden's Office — the clinic is right beside it."
+                        Step("Head left into the N-area cluster."),
+                        Step("Find the Warden's Office — the clinic is right beside it.")
                     )
                 )
             )
@@ -380,8 +377,8 @@ class LocationRepo {
                 Approach(
                     from  = "Main Gate",
                     steps = arrayOf(
-                        "Enter through the main gate and turn left toward IDE.",
-                        "The weather station is near IDE, below the tents area beside the sports ground."
+                        Step("Enter through the main gate and turn left toward IDE."),
+                        Step("The weather station is near IDE, below the tents area beside the sports ground.")
                     )
                 )
             )
@@ -394,7 +391,6 @@ class LocationRepo {
         val q = raw.trim().lowercase()
         if (q.isEmpty()) return all
 
-        // Score: 0 = exact code match, 1 = corpus substring, 2 = fuzzy
         val hits = all.mapNotNull { loc ->
             val score = when {
                 loc.codes.any { it.lowercase() == q } -> 0

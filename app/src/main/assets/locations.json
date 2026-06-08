@@ -10,19 +10,11 @@
         "from": "Main Gate",
         "steps": [
           "Enter through the main gate and walk straight along the main road.",
-          "Keep walking past the Admin block — you will see it on your left.",
+          "Turn left and walk towards the trees",
           "Look for the large hall with the distinctive roof ahead of you on the right.",
-          "The entrance to the MPH faces the main road."
+          "The entrance to the MPH the girls blocks away from Commerce block."
         ]
       },
-      {
-        "from": "Sports Emporium",
-        "steps": [
-          "With the Sports Emporium behind you, walk toward the main road.",
-          "Turn left onto the main road.",
-          "The MPH will be visible on your left after about two minutes of walking."
-        ]
-      }
     ]
   },
   {
@@ -35,19 +27,11 @@
       {
         "from": "Main Gate",
         "steps": [
-          "Enter through the main gate and follow the main road.",
-          "Take the first major turning on the left after the Admin block.",
-          "Follow that road downhill — the Sports Emporium is the large building at the bottom."
+          "Enter through the main gate and follow the road on the right.",
+          "Walk straight ahead, past the engineering and science parking lots.",
+          "It is the large building on the right, before the white building."
         ]
       },
-      {
-        "from": "Commerce Building",
-        "steps": [
-          "From the Commerce Building, walk toward the open field.",
-          "Cross the field heading south.",
-          "The Sports Emporium is visible at the far end of the field."
-        ]
-      }
     ]
   },
   {
@@ -60,9 +44,9 @@
       {
         "from": "Main Gate",
         "steps": [
-          "Enter through the main gate and walk along the main road.",
-          "After passing the Admin block, take the path on your right.",
-          "The Commerce Building is the large rectangular building directly ahead."
+          "Enter through the main gate take the path on the left.",
+          "Walk past the parking lot until you see an entrace",
+          "The entrance you see leads directly into the commerce block."
         ]
       }
     ]
@@ -77,10 +61,10 @@
       {
         "from": "Main Gate",
         "steps": [
-          "Enter through the main gate and walk straight ahead.",
-          "The Admin block is the first major building on your left — you cannot miss it.",
-          "Enter through the main Admin block doors.",
-          "Turn right inside the entrance. The Finance Office is the second door on the right, marked with a sign."
+          "Enter through the main gate and walk straight ahead, down the main walk.",
+          "Enter the hall, turn right and walk straight.",
+          "Walk past the office and dorm on the left and towards a white building ahead",
+          "Finance office is the white building."
         ]
       }
     ]
@@ -95,19 +79,11 @@
       {
         "from": "Main Gate",
         "steps": [
-          "Enter through the main gate and walk along the main road.",
-          "Pass the Admin block on your left and continue walking.",
-          "The Chapel is visible on the right side of the road — look for the cross on the building."
+          "Walk to the road on the right.",
+          "Walk straight and past the parking lots and the sports emporium.",
+          "The Chapel is the white building."
         ]
       },
-      {
-        "from": "Multi-Purpose Hall",
-        "steps": [
-          "Stand facing the MPH entrance.",
-          "Turn right and walk along the path beside the MPH.",
-          "The Chapel is a short walk ahead, recognisable by the cross on its facade."
-        ]
-      }
     ]
   },
   {
@@ -120,9 +96,10 @@
       {
         "from": "Main Gate",
         "steps": [
-          "Enter through the main gate and walk past the Admin block.",
-          "Take the road that leads toward the student hostels.",
-          "The Warden's Office is a smaller standalone building near the entrance to the hostel area — look for the sign above the door."
+          "Enter through the main gate and down the long, diagonal walk",
+          "Enter the intersection and walk straight past it, past the girls dorms",
+          "Walk past the long building and two storey building ahead".
+          "Warden's office is just the one storey building just in front of you."
         ]
       }
     ]
@@ -137,10 +114,10 @@
       {
         "from": "Main Gate",
         "steps": [
-          "Enter through the main gate and walk toward the hostel area.",
-          "Head toward Lomawa hostel — it is the hostel block on the eastern side of the residence area.",
-          "The Peer Counselling Office is in the small building directly adjacent to the Lomawa hostel entrance.",
-          "Look for the blue door with the Peer Counselling sign."
+          "Enter through the main gate and walk down the long walk",
+          "Enter intersection and turn right.",
+          "Walk straight ahead, the office you are looking for is on the left.",
+          "A find a large gap with a wooden door. Peer counseling is the door to the left of that."
         ]
       }
     ]

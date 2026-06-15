@@ -61,21 +61,7 @@ so you can add them incrementally.
 
 Open in Android Studio (Ladybug or newer), sync Gradle, run on device or emulator.
 
-Minimum Android version: 8.0 (API 26) — covers virtually all phones on campus.
+Minimum Android version: 8.0 (API 26) — covers virtually all phones on campus that are android.
 
 ## Two-Week Plan
-
-### Week 1
-- [x] Core app structure and navigation
-- [x] Data model and JSON loading
-- [x] Home screen with search
-- [x] Directions screen with steps
-- [ ] Take photos of all 7 initial locations
-- [ ] Walk each route and verify/correct direction text
-
-### Week 2
-- [ ] User testing with first-year students (aim for 5-10 people)
-- [ ] Fix any directions that confused testers
-- [ ] Replace placeholder photos
-- [ ] Add any missing locations found during testing
-- [ ] Final APK build for submission
+Ended up scraping this and tossing this into facebook, and getting google forms lol.

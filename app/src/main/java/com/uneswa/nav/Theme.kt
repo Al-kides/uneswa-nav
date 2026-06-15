@@ -5,17 +5,18 @@ import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 
-private val Navy  = Color(0xFF003082)
-private val Gold  = Color(0xFFFFCC00)
-private val NavyD = Color(0xFF001A4D)
+private val UneswaRed  = Color(0xFFB71C1C)
+private val UneswaGold = Color(0xFFF9A825)
+private val DarkRed    = Color(0xFF7F0000)
 
 private val scheme = lightColorScheme(
-    primary            = Navy,
+    primary            = UneswaRed,
     onPrimary          = Color.White,
-    primaryContainer   = Color(0xFFD6E3FF),
-    onPrimaryContainer = NavyD,
-    secondary          = Gold,
-    onSecondary        = Color.Black
+    primaryContainer   = Color(0xFFFFEBEE),
+    onPrimaryContainer = DarkRed,
+    secondary          = UneswaGold,
+    onSecondary        = Color.Black,
+    surfaceVariant     = Color(0xFFF5F5F5)
 )
 
 @Composable

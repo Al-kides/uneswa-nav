@@ -1,4 +1,9 @@
 <resources>
-    <!-- Base theme; Compose takes over from here via UneswaNavTheme -->
     <style name="Theme.UneswaNav" parent="android:Theme.Material.Light.NoActionBar" />
+
+    <style name="Theme.App.Starting" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenAnimatedIcon">@drawable/app_logo</item>
+        <item name="windowSplashScreenBackground">#FFFFFF</item>
+        <item name="postSplashScreenTheme">@style/Theme.UneswaNav</item>
+    </style>
 </resources>

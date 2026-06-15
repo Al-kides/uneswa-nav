@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.update
 
 class HomeVM(private val repo: LocationRepo) : ViewModel() {
 
-    private val _q       = MutableStateFlow("")
+    private val _q = MutableStateFlow("")
     private val _results = MutableStateFlow(repo.all.toList())
 
     val q       = _q.asStateFlow()

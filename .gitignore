@@ -10,3 +10,9 @@
 .externalNativeBuild
 .cxx
 local.properties
+
+# Build outputs - add to app/.gitignore or root .gitignore
+app/build/
+build/
+*.apk
+*.aab

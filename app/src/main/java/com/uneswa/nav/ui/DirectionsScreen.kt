@@ -14,8 +14,9 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import coil.compose.SubcomposeAsyncImage
+import coil.compose.AsyncImage
 import coil.decode.ImageDecoderDecoder
+import coil.request.CachePolicy
 import coil.request.ImageRequest
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -32,7 +33,16 @@ fun DirectionsScreen(vm: DirectionsVM, onBack: () -> Unit) {
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text(loc.name) },
+                title = {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        AsyncImage(
+                            model = "file:///android_asset/drawable/logo.png",
+                            contentDescription = "UNESWA Logo", // placeholder because I can't use Uni logo for obvious reasons.
+                            modifier = Modifier.size(32.dp).padding(end = 8.dp)
+                        )
+                        Text(loc.name)
+                    }
+                },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
                         Icon(Icons.AutoMirrored.Filled.ArrowBack, "Back")
@@ -126,22 +136,17 @@ private fun Photo(name: String) {
         modifier  = Modifier.size(width = 240.dp, height = 160.dp),
         elevation = CardDefaults.cardElevation(2.dp)
     ) {
-        SubcomposeAsyncImage(
+        AsyncImage(
             model = ImageRequest.Builder(ctx)
                 .data(if (resId != 0) resId else assetPath)
                 .decoderFactory(ImageDecoderDecoder.Factory())
-                .crossfade(true)
+                .memoryCachePolicy(CachePolicy.ENABLED)
+                .diskCachePolicy(CachePolicy.ENABLED)
+                .crossfade(false)
                 .build(),
             contentDescription = name,
             contentScale       = ContentScale.Crop,
-            modifier           = Modifier.fillMaxSize(),
-            error              = {
-                Box(Modifier.fillMaxSize(), Alignment.Center) {
-                    Text("📷 Photo coming soon",
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant)
-                }
-            }
+            modifier           = Modifier.fillMaxSize()
         )
     }
 }
@@ -179,22 +184,17 @@ private fun Step(n: Int, step: com.uneswa.nav.data.Step) {
                 val resId = ctx.resources.getIdentifier(step.image, "drawable", ctx.packageName)
                 val assetPath = "file:///android_asset/drawable/${step.image}.heic"
 
-                SubcomposeAsyncImage(
+                AsyncImage(
                     model = ImageRequest.Builder(ctx)
                         .data(if (resId != 0) resId else assetPath)
                         .decoderFactory(ImageDecoderDecoder.Factory())
-                        .crossfade(true)
+                        .memoryCachePolicy(CachePolicy.ENABLED)
+                        .diskCachePolicy(CachePolicy.ENABLED)
+                        .crossfade(false)
                         .build(),
                     contentDescription = null,
                     contentScale = ContentScale.Crop,
-                    modifier = Modifier.fillMaxSize(),
-                    error = {
-                        Box(Modifier.fillMaxSize(), Alignment.Center) {
-                            Text("📷 Step photo",
-                                style = MaterialTheme.typography.bodySmall,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant)
-                        }
-                    }
+                    modifier = Modifier.fillMaxSize()
                 )
             }
         }

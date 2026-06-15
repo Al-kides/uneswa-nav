@@ -1,0 +1,33 @@
+# Android Studio / IntelliJ
+*.iml
+.gradle
+/local.properties
+/.idea
+.DS_Store
+/build
+/captures
+.externalNativeBuild
+.cxx
+
+# Specific build folders
+app/build/
+build/
+
+# Signing files
+*.jks
+*.keystore
+
+# Built artifacts
+*.apk
+*.aar
+*.jar
+
+# Kotlin
+.kotlin/
+
+# Temporary / Unarranged raw files (if they exist)
+Unarranged/
+raw_assets/
+
+# Keep images (assets)
+!app/src/main/assets/drawable/

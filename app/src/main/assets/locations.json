@@ -1,123 +1,487 @@
 [
   {
-    "id": "mph",
-    "fullName": "Multi-Purpose Hall",
-    "abbreviation": "MPH",
-    "description": "The largest indoor venue on campus, used for graduation ceremonies, large lectures, and major events.",
-    "photos": ["mph_exterior", "mph_entrance"],
-    "approaches": [
+    "id": "admin",
+    "name": "Administrator Block",
+    "abbr": "Admin",
+    "codes": ["Admin", "Registry", "Administration"],
+    "desc": "Main administration building — Registrar, student records, and general university admin.",
+    "photos": [
+      "admin_1",
+      "admin_2",
+      "admin_3",
+      "admin_4",
+      "admin_5",
+      "admin_6",
+      "admin_7"
+    ],
+    "routes": [
       {
         "from": "Main Gate",
         "steps": [
-          "Enter through the main gate and walk straight along the main road.",
-          "Turn left and walk towards the trees",
-          "Look for the large hall with the distinctive roof ahead of you on the right.",
-          "The entrance to the MPH the girls blocks away from Commerce block."
+          { "text": "Enter from the main gate." },
+          {
+            "text": "Take the path on the right and walk straight, past buildings on the left."
+          },
+          { "text": "Once you see a tall white building, turn left." },
+          { "text": "Descend the parking lot and stick to its left." },
+          {
+            "text": "Walk down to the archway that leads toward the red and white buildings."
+          },
+          { "text": "Follow the path and stay on the right." },
+          { "text": "The Admin office is opposite the bamboo plants." }
         ]
-      },
-    ]
-  },
-  {
-    "id": "se",
-    "fullName": "Sports Emporium",
-    "abbreviation": "SE",
-    "description": "The main sports facility on campus, housing the gym, indoor courts, and changing rooms.",
-    "photos": ["se_exterior", "se_entrance"],
-    "approaches": [
-      {
-        "from": "Main Gate",
-        "steps": [
-          "Enter through the main gate and follow the road on the right.",
-          "Walk straight ahead, past the engineering and science parking lots.",
-          "It is the large building on the right, before the white building."
-        ]
-      },
+      }
     ]
   },
   {
     "id": "com",
-    "fullName": "Commerce Building",
-    "abbreviation": "Com",
-    "description": "Houses the Faculty of Commerce, with lecture rooms and staff offices for business-related departments.",
-    "photos": ["com_exterior", "com_entrance"],
-    "approaches": [
+    "name": "Commerce Building",
+    "abbr": "Com",
+    "codes": ["Com", "Commerce", "G Block"],
+    "desc": "Faculty of Commerce lecture rooms and offices.",
+    "photos": ["com_1", "com_2", "com_3"],
+    "routes": [
       {
         "from": "Main Gate",
         "steps": [
-          "Enter through the main gate take the path on the left.",
-          "Walk past the parking lot until you see an entrace",
-          "The entrance you see leads directly into the commerce block."
+          { "text": "Enter the gate and turn to your left and walk down." },
+          {
+            "text": "Continue walking down the path until you find a parking lot."
+          },
+          {
+            "text": "That is the Commerce building; walk into the space under the archway."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "se",
+    "name": "Sports Emporium",
+    "abbr": "SE",
+    "codes": ["SE", "Emporium", "Sports", "Graduation", "Gym", "Pool"],
+    "desc": "The largest indoor venue on campus. Houses the university gym, swimming pool, and courts. Primary venue for graduation ceremonies.",
+    "photos": ["se_1", "se_2", "se_3", "se_4"],
+    "routes": [
+      {
+        "from": "Main Gate",
+        "steps": [
+          { "text": "Enter the gate and take the path on the right." },
+          {
+            "text": "Walk straight past the buildings and parking lots on the left."
+          },
+          { "text": "Walk past the other parking lots." },
+          {
+            "text": "The Emporium is the large white and grey building on your right."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "engineering",
+    "name": "Engineering Block",
+    "abbr": "Eng",
+    "codes": ["EE", "Engineering", "Eng"],
+    "desc": "Faculty of Engineering lecture rooms and laboratories.",
+    "photos": ["engineering_1", "engineering_2"],
+    "routes": [
+      {
+        "from": "Main Gate",
+        "steps": [
+          { "text": "Enter the gate and walk down the path on the right." },
+          {
+            "text": "The Engineering Block is the first building to your left."
+          }
         ]
       }
     ]
   },
   {
     "id": "finance",
-    "fullName": "Finance Office",
-    "abbreviation": "Finance",
-    "description": "Handles fee payments, financial clearance, and bursary queries. Located inside the Admin block.",
-    "photos": ["admin_block_exterior", "finance_office_door"],
-    "approaches": [
+    "name": "Finance Office",
+    "abbr": "Finance",
+    "codes": ["Finance", "Cash Office", "Fees"],
+    "desc": "Fee payments, financial clearance, and bursary queries.",
+    "photos": [
+      "finance_1",
+      "finance_2",
+      "finance_3",
+      "finance_4",
+      "finance_5",
+      "finance_6",
+      "finance_7",
+      "finance_8"
+    ],
+    "routes": [
       {
         "from": "Main Gate",
         "steps": [
-          "Enter through the main gate and walk straight ahead, down the main walk.",
-          "Enter the hall, turn right and walk straight.",
-          "Walk past the office and dorm on the left and towards a white building ahead",
-          "Finance office is the white building."
+          { "text": "Enter the gate." },
+          { "text": "Go down the long walk." },
+          { "text": "Enter the hall intersection." },
+          { "text": "Turn right and walk straight." },
+          { "text": "Follow the path." },
+          { "text": "Continue walking straight past the large gap." },
+          { "text": "Walk straight." },
+          { "text": "The Finance office is the white building to the left." }
         ]
       }
     ]
   },
   {
-    "id": "chapel",
-    "fullName": "Chapel",
-    "abbreviation": "Chapel",
-    "description": "The university chapel, used for religious services and sometimes official ceremonies.",
-    "photos": ["chapel_exterior"],
-    "approaches": [
+    "id": "fnb",
+    "name": "FNB Cyberspace",
+    "abbr": "FNB",
+    "codes": ["FNB", "Cyberspace"],
+    "desc": "A computer lab and internet hub for students, sponsored by FNB.",
+    "photos": [
+      "fnb_1",
+      "fnb_2",
+      "fnb_3",
+      "fnb_4",
+      "fnb_5",
+      "fnb_6",
+      "fnb_7",
+      "fnb_8"
+    ],
+    "routes": [
       {
         "from": "Main Gate",
         "steps": [
-          "Walk to the road on the right.",
-          "Walk straight and past the parking lots and the sports emporium.",
-          "The Chapel is the white building."
+          { "text": "Enter the gate." },
+          { "text": "Go down the long walk." },
+          { "text": "Enter the hall intersection." },
+          { "text": "Turn right and walk straight." },
+          { "text": "Follow the path." },
+          { "text": "Continue walking straight past the large gap." },
+          { "text": "Walk straight." },
+          { "text": "FNB Cyberspace is to your right; it has a green sign." }
         ]
-      },
+      }
     ]
   },
   {
-    "id": "wardens",
-    "fullName": "Warden's Office",
-    "abbreviation": "Warden",
-    "description": "Handles student accommodation matters, hostel allocation, and residence-related complaints.",
-    "photos": ["wardens_office_exterior"],
-    "approaches": [
+    "id": "ide",
+    "name": "Institute of Distance Learning (IDE)",
+    "abbr": "IDE",
+    "codes": ["IDE", "Distance Learning"],
+    "desc": "Handles distance learning programmes and administration.",
+    "photos": ["ide_1", "ide_2", "ide_3", "ide_4"],
+    "routes": [
       {
         "from": "Main Gate",
         "steps": [
-          "Enter through the main gate and down the long, diagonal walk",
-          "Enter the intersection and walk straight past it, past the girls dorms",
-          "Walk past the long building and two storey building ahead".
-          "Warden's office is just the one storey building just in front of you."
+          { "text": "Enter the gate." },
+          { "text": "Head down the left path and walk straight down." },
+          {
+            "text": "Keep walking straight down and ignore the first parking lot."
+          },
+          { "text": "You are at IDE; it is to your right." }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "library",
+    "name": "University Library",
+    "abbr": "Library",
+    "codes": ["Library", "Lib"],
+    "desc": "The university's main library, providing academic resources and study spaces. Has Anitta's grave.",
+    "photos": [
+      "library_1",
+      "library_2",
+      "library_3",
+      "library_4",
+      "library_5",
+      "library_6",
+      "library_7",
+      "library_8",
+      "library_9",
+      "library_10",
+      "library_11",
+      "library_12"
+    ],
+    "routes": [
+      {
+        "from": "Main Gate",
+        "steps": [
+          { "text": "Enter the gate." },
+          { "text": "Go down the long walk." },
+          { "text": "Enter the hall intersection." },
+          { "text": "Turn right and walk straight." },
+          { "text": "Follow the path." },
+          { "text": "Continue walking straight past the large gap." },
+          { "text": "Walk straight." },
+          { "text": "Walk past the white building to your left." },
+          { "text": "Ignore the stairs on your right and keep walking." },
+          { "text": "Walk straight past those stairs and head down the hall." },
+          {
+            "text": "You will see a glass door to your left, that is the library"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "mfac",
+    "name": "Motsepe Foundation Academic Complex (MFAC)",
+    "abbr": "MFAC",
+    "codes": ["MFAC", "Motsepe"],
+    "desc": "Motsepe Academic Complex, a modern facility for lectures and academic activities.",
+    "photos": ["mfac_1", "mfac_2", "mfac_3", "mfac_4", "mfac_5", "mfac_6"],
+    "routes": [
+      {
+        "from": "Main Gate",
+        "steps": [
+          { "text": "Enter the gate." },
+          { "text": "Go down the long walk in the middle path." },
+          { "text": "Enter the intersection and walk past it." },
+          {
+            "text": "Walk past the white building towards some trees and a two-storey building."
+          },
+          {
+            "text": "Motsepe Academic Complex is the two-storey building to your right."
+          },
+          { "text": "Welcome to MFAC." }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "mph",
+    "name": "Multi-Purpose Hall (MPH)",
+    "abbr": "MPH",
+    "codes": ["MPH", "Hall"],
+    "desc": "The largest indoor venue on campus, sometimes used for major events and but typically basketball and volleyball.",
+    "photos": ["mph_1", "mph_2", "mph_3", "mph_4", "mph_5", "mph_6", "mph_7"],
+    "routes": [
+      {
+        "from": "Main Gate",
+        "steps": [
+          { "text": "Enter the main gate." },
+          { "text": "Head down the path in the middle." },
+          {
+            "text": "You will see a large building with trees next to it; approach and hug those trees."
+          },
+          { "text": "Walk along the trees." },
+          { "text": "Follow the path next to the trees." },
+          { "text": "MPH is in front of you." }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "new_office",
+    "name": "New Office",
+    "abbr": "New Office",
+    "codes": ["New Office"],
+    "desc": "Recently constructed office space for university staff. Faculty of Science Tutor Resides there",
+    "photos": [
+      "new_office_1",
+      "new_office_2",
+      "new_office_3",
+      "new_office_4",
+      "new_office_5",
+      "new_office_6",
+      "new_office_7",
+      "new_office_8",
+      "new_office_9",
+      "new_office_10"
+    ],
+    "routes": [
+      {
+        "from": "Main Gate",
+        "steps": [
+          { "text": "Enter the gate." },
+          { "text": "Go down the long walk." },
+          { "text": "Enter the hall intersection." },
+          { "text": "Turn right and walk straight." },
+          { "text": "Follow the path." },
+          { "text": "Continue walking straight past the large gap." },
+          { "text": "Walk straight." },
+          { "text": "The Finance office is the white building to the left." },
+          { "text": "Face the Finance door and turn around 180 degrees." },
+          { "text": "Walk down the path between the two buildings." },
+          { "text": "It is that building in front of you." }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "n_class",
+    "name": "N Classes",
+    "abbr": "N",
+    "codes": ["N1", "N2", "N3", "N Block"],
+    "desc": "Lecture rooms primarily used for undergraduate courses.",
+    "photos": [
+      "n_class_1",
+      "n_class_2",
+      "n_class_3",
+      "n_class_4",
+      "n_class_5",
+      "n_class_6",
+      "n_class_7"
+    ],
+    "routes": [
+      {
+        "from": "Main Gate",
+        "steps": [
+          { "text": "Enter the gate." },
+          { "text": "Go down the long walk in the middle path." },
+          { "text": "Enter the intersection and walk past it." },
+          {
+            "text": "Walk past the white building towards some trees and a two-storey building."
+          },
+          { "text": "N classes are that long white building." },
+          { "text": "Welcome to N." }
         ]
       }
     ]
   },
   {
     "id": "peer_counselling",
-    "fullName": "Peer Counselling Office",
-    "abbreviation": "Peer Counselling",
-    "description": "Provides confidential peer support and counselling services for students. Located near Lomawa hostel.",
-    "photos": ["lomawa_hostel", "peer_counselling_door"],
-    "approaches": [
+    "name": "Peer Counseling Office",
+    "abbr": "PC",
+    "codes": ["Peer Counseling", "Counselling"],
+    "desc": "Provides confidential peer support and counselling services for students.",
+    "photos": [
+      "peer_counselling_1",
+      "peer_counselling_2",
+      "peer_counselling_3",
+      "peer_counselling_4",
+      "peer_counselling_5",
+      "peer_counselling_6",
+      "peer_counselling_7"
+    ],
+    "routes": [
       {
         "from": "Main Gate",
         "steps": [
-          "Enter through the main gate and walk down the long walk",
-          "Enter intersection and turn right.",
-          "Walk straight ahead, the office you are looking for is on the left.",
-          "A find a large gap with a wooden door. Peer counseling is the door to the left of that."
+          { "text": "Enter the main gate." },
+          { "text": "Walk down the long walk (middle path)." },
+          { "text": "Enter the hall and turn right." },
+          { "text": "Walk straight." },
+          { "text": "Take the bend to the left and walk straight." },
+          { "text": "You will come across a gap." },
+          { "text": "Turn left and the office is the door on the left." }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "science",
+    "name": "Science Block",
+    "abbr": "Science",
+    "codes": ["Science", "BSc"],
+    "desc": "Houses laboratories and offices for the Faculty of Science.",
+    "photos": ["science_1", "science_2", "science_3"],
+    "routes": [
+      {
+        "from": "Main Gate",
+        "steps": [
+          { "text": "Enter the gate." },
+          { "text": "Down the long walk." },
+          { "text": "It is the white two-storey building to your right." }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "slt",
+    "name": "Science Lecture Theater (SLT)",
+    "abbr": "SLT",
+    "codes": ["SLT", "SLT 1", "SLT 2"],
+    "desc": "Large lecture theaters for science and general presentations.",
+    "photos": ["slt_1", "slt_2", "slt_3", "slt_4", "slt_5", "slt_6"],
+    "routes": [
+      {
+        "from": "Main Gate",
+        "steps": [
+          { "text": "Enter the main gate." },
+          { "text": "Go down the middle path." },
+          { "text": "Enter the hallway and turn right." },
+          { "text": "Walk straight until you see the hall bending left." },
+          { "text": "Turn right (the first is SLT 2)." },
+          { "text": "Head up the hall past SLT 2 to see SLT 1." }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "tents",
+    "name": "Tent 1 & 2",
+    "abbr": "Tents",
+    "codes": ["Tent 1", "Tent 2"],
+    "desc": "Temporary lecture and event spaces.",
+    "photos": [
+      "tents_1",
+      "tents_2",
+      "tents_3",
+      "tents_4",
+      "tents_5",
+      "tents_6",
+      "tents_7",
+      "tents_8",
+      "tents_9",
+      "tents_10",
+      "tents_11"
+    ],
+    "routes": [
+      {
+        "from": "Main Gate",
+        "steps": [
+          { "text": "Enter the main gate." },
+          { "text": "Head down the path in the middle." },
+          {
+            "text": "You will see a large building with trees next to it; approach and hug those trees."
+          },
+          { "text": "Walk along the trees." },
+          { "text": "Follow the path next to the trees." },
+          { "text": "The MPH is in front of you." },
+          {
+            "text": "Do not go down the stairs in front of you. Turn right and descend the stairs on your right."
+          },
+          {
+            "text": "You will find an intersection; turn right and walk forward."
+          },
+          { "text": "You will see some sinks (IDE is to your right)." },
+          {
+            "text": "Walk past the sinks and you will see the tents. Closest to you is Tent 1 and the other is Tent 2."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "warden",
+    "name": "Warden's Office",
+    "abbr": "Warden",
+    "codes": ["Warden", "Accommodation"],
+    "desc": "Handles student accommodation, hostel allocation, and residence matters.",
+    "photos": [
+      "warden_1",
+      "warden_2",
+      "warden_3",
+      "warden_4",
+      "warden_5",
+      "warden_6",
+      "warden_7"
+    ],
+    "routes": [
+      {
+        "from": "Main Gate",
+        "steps": [
+          { "text": "Enter the main gate." },
+          { "text": "Down the long walk." },
+          { "text": "Enter the intersection and walk past it." },
+          { "text": "Walk past the white buildings." },
+          { "text": "Walk towards the trees and the two-storey building." },
+          { "text": "Walk past them." },
+          { "text": "Ignore the building on the right." },
+          {
+            "text": "The Warden's office is that small building in the middle."
+          }
         ]
       }
     ]

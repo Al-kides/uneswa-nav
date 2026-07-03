@@ -73,21 +73,16 @@ fun DirectionsScreen(vm: DirectionsVM, onBack: () -> Unit) {
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
 
-                // Header card: abbreviation expanded
+                // Header card: building name and description
                 item {
                     Card(colors = CardDefaults.cardColors(
                         containerColor = MaterialTheme.colorScheme.primaryContainer
                     )) {
                         Column(Modifier.padding(16.dp)) {
-                            Row(verticalAlignment = Alignment.CenterVertically) {
-                                Text(loc.abbr,
-                                    style      = MaterialTheme.typography.headlineMedium,
-                                    fontWeight = FontWeight.Bold,
-                                    color      = MaterialTheme.colorScheme.primary)
-                                Text("  =  ${loc.name}",
-                                    style = MaterialTheme.typography.titleMedium,
-                                    color = MaterialTheme.colorScheme.onPrimaryContainer)
-                            }
+                            Text(loc.name,
+                                style      = MaterialTheme.typography.headlineMedium,
+                                fontWeight = FontWeight.Bold,
+                                color      = MaterialTheme.colorScheme.primary)
                             Spacer(Modifier.height(8.dp))
                             Text(loc.desc,
                                 style = MaterialTheme.typography.bodyMedium,

@@ -52,10 +52,10 @@ class LocationRepo {
 
         Location(
             id     = "com",
-            name   = "Commerce Building",
+            name   = "Commerce Block",
             abbr   = "Com",
-            codes  = arrayOf("Com", "Commerce", "G Block"),
-            desc   = "Faculty of Commerce lecture rooms and offices.",
+            codes  = arrayOf("Com", "Commerce", "G Block", "G Classrooms", "G"),
+            desc   = "Faculty of Commerce lecture rooms and offices. It hosts the G classrooms.",
             photos = arrayOf("com_1", "com_2", "com_3"),
             routes = arrayOf(
                 Approach(
@@ -63,7 +63,7 @@ class LocationRepo {
                     steps = arrayOf(
                         Step("Enter the gate and turn to your left and walk down."),
                         Step("Continue walking down the path until you find a parking lot."),
-                        Step("That is the Commerce building; walk into the space under the archway.")
+                        Step("That is the Commerce block; walk into the space under the archway.")
                     )
                 )
             )

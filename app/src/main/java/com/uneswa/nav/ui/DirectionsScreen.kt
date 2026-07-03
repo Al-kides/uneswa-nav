@@ -1,18 +1,24 @@
 package com.uneswa.nav.ui
 
+import android.content.Context
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.TouchApp
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.decode.ImageDecoderDecoder
@@ -30,98 +36,161 @@ fun DirectionsScreen(vm: DirectionsVM, onBack: () -> Unit) {
         return
     }
 
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = {
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        AsyncImage(
-                            model = "file:///android_asset/drawable/logo.png",
-                            contentDescription = "UNESWA Logo", // placeholder because I can't use Uni logo for obvious reasons.
-                            modifier = Modifier.size(32.dp).padding(end = 8.dp)
-                        )
-                        Text(loc.name)
-                    }
-                },
-                navigationIcon = {
-                    IconButton(onClick = onBack) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, "Back")
-                    }
-                },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor           = MaterialTheme.colorScheme.primary,
-                    titleContentColor        = MaterialTheme.colorScheme.onPrimary,
-                    navigationIconContentColor = MaterialTheme.colorScheme.onPrimary
-                )
-            )
-        }
-    ) { pad ->
-        LazyColumn(
-            modifier        = Modifier.fillMaxSize().padding(pad),
-            contentPadding  = PaddingValues(16.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
-        ) {
+    val context = LocalContext.current
+    val prefs = remember { context.getSharedPreferences("uneswa_nav_prefs", Context.MODE_PRIVATE) }
+    var showOnboarding by remember { mutableStateOf(prefs.getBoolean("first_time_directions", true)) }
 
-            // Header card: abbreviation expanded
-            item {
-                Card(colors = CardDefaults.cardColors(
-                    containerColor = MaterialTheme.colorScheme.primaryContainer
-                )) {
-                    Column(Modifier.padding(16.dp)) {
+    Box(Modifier.fillMaxSize()) {
+        Scaffold(
+            topBar = {
+                TopAppBar(
+                    title = {
                         Row(verticalAlignment = Alignment.CenterVertically) {
-                            Text(loc.abbr,
-                                style      = MaterialTheme.typography.headlineMedium,
-                                fontWeight = FontWeight.Bold,
-                                color      = MaterialTheme.colorScheme.primary)
-                            Text("  =  ${loc.name}",
-                                style = MaterialTheme.typography.titleMedium,
+                            AsyncImage(
+                                model = "file:///android_asset/drawable/logo.png",
+                                contentDescription = "UNESWA Logo",
+                                modifier = Modifier.size(32.dp).padding(end = 8.dp)
+                            )
+                            Text(loc.name)
+                        }
+                    },
+                    navigationIcon = {
+                        IconButton(onClick = onBack) {
+                            Icon(Icons.AutoMirrored.Filled.ArrowBack, "Back")
+                        }
+                    },
+                    colors = TopAppBarDefaults.topAppBarColors(
+                        containerColor           = MaterialTheme.colorScheme.primary,
+                        titleContentColor        = MaterialTheme.colorScheme.onPrimary,
+                        navigationIconContentColor = MaterialTheme.colorScheme.onPrimary
+                    )
+                )
+            }
+        ) { pad ->
+            LazyColumn(
+                modifier        = Modifier.fillMaxSize().padding(pad),
+                contentPadding  = PaddingValues(16.dp),
+                verticalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+
+                // Header card: abbreviation expanded
+                item {
+                    Card(colors = CardDefaults.cardColors(
+                        containerColor = MaterialTheme.colorScheme.primaryContainer
+                    )) {
+                        Column(Modifier.padding(16.dp)) {
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                Text(loc.abbr,
+                                    style      = MaterialTheme.typography.headlineMedium,
+                                    fontWeight = FontWeight.Bold,
+                                    color      = MaterialTheme.colorScheme.primary)
+                                Text("  =  ${loc.name}",
+                                    style = MaterialTheme.typography.titleMedium,
+                                    color = MaterialTheme.colorScheme.onPrimaryContainer)
+                            }
+                            Spacer(Modifier.height(8.dp))
+                            Text(loc.desc,
+                                style = MaterialTheme.typography.bodyMedium,
                                 color = MaterialTheme.colorScheme.onPrimaryContainer)
                         }
+                    }
+                }
+
+                // Photo strip — skipped entirely if no photos available
+                if (loc.photos.isNotEmpty()) {
+                    item {
+                        Text("Photos", style = MaterialTheme.typography.titleMedium,
+                            fontWeight = FontWeight.SemiBold)
                         Spacer(Modifier.height(8.dp))
-                        Text(loc.desc,
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.onPrimaryContainer)
-                    }
-                }
-            }
-
-            // Photo strip — skipped entirely if no photos available
-            if (loc.photos.isNotEmpty()) {
-                item {
-                    Text("Photos", style = MaterialTheme.typography.titleMedium,
-                        fontWeight = FontWeight.SemiBold)
-                    Spacer(Modifier.height(8.dp))
-                    LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                        items(loc.photos.size) { Photo(loc.photos[it]) }
-                    }
-                }
-            }
-
-            // Approach selector — only rendered when there are multiple routes
-            if (loc.routes.size > 1) {
-                item {
-                    Text("Coming from:", style = MaterialTheme.typography.titleMedium,
-                        fontWeight = FontWeight.SemiBold)
-                    Spacer(Modifier.height(8.dp))
-                    Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                        loc.routes.forEachIndexed { i, route ->
-                            FilterChip(
-                                selected = i == idx,
-                                onClick  = { vm.pick(i) },
-                                label    = { Text(route.from) }
-                            )
+                        LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                            items(loc.photos.size) { Photo(loc.photos[it]) }
                         }
                     }
                 }
-            }
 
-            item {
-                Text("Directions", style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.SemiBold)
-            }
+                // Approach selector — only rendered when there are multiple routes
+                if (loc.routes.size > 1) {
+                    item {
+                        Text("Coming from:", style = MaterialTheme.typography.titleMedium,
+                            fontWeight = FontWeight.SemiBold)
+                        Spacer(Modifier.height(8.dp))
+                        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                            loc.routes.forEachIndexed { i, route ->
+                                FilterChip(
+                                    selected = i == idx,
+                                    onClick  = { vm.pick(i) },
+                                    label    = { Text(route.from) }
+                                )
+                            }
+                        }
+                    }
+                }
 
-            val steps = loc.routes.getOrNull(idx)?.steps ?: emptyArray()
-            itemsIndexed(steps) { i, step -> Step(i + 1, step) }
+                item {
+                    Text("Directions", style = MaterialTheme.typography.titleMedium,
+                        fontWeight = FontWeight.SemiBold)
+                }
+
+                val steps = loc.routes.getOrNull(idx)?.steps ?: emptyArray()
+                itemsIndexed(steps) { i, step -> Step(i + 1, step) }
+            }
+        }
+
+        if (showOnboarding) {
+            OnboardingOverlay {
+                showOnboarding = false
+                prefs.edit().putBoolean("first_time_directions", false).apply()
+            }
+        }
+    }
+}
+
+@Composable
+private fun OnboardingOverlay(onDismiss: () -> Unit) {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color.Black.copy(alpha = 0.85f))
+            .clickable { onDismiss() },
+        contentAlignment = Alignment.Center
+    ) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier.padding(32.dp)
+        ) {
+            Icon(
+                imageVector = Icons.Default.TouchApp,
+                contentDescription = null,
+                tint = Color.White,
+                modifier = Modifier.size(80.dp)
+            )
+            Spacer(Modifier.height(24.dp))
+            Text(
+                text = "How to Navigate",
+                style = MaterialTheme.typography.headlineMedium,
+                color = Color.White,
+                fontWeight = FontWeight.Bold
+            )
+            Spacer(Modifier.height(16.dp))
+            Text(
+                text = "• Swipe photos left/right to see different angles.\n\n" +
+                       "• Scroll down to read step-by-step instructions.\n\n" +
+                       "• Follow the landmarks mentioned in the text.",
+                style = MaterialTheme.typography.bodyLarge,
+                color = Color.White,
+                textAlign = TextAlign.Start
+            )
+            Spacer(Modifier.height(48.dp))
+            Button(
+                onClick = onDismiss,
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = MaterialTheme.colorScheme.secondary,
+                    contentColor = MaterialTheme.colorScheme.onSecondary
+                ),
+                modifier = Modifier.fillMaxWidth().height(56.dp)
+            ) {
+                Text("Got it, let's go!", style = MaterialTheme.typography.titleMedium)
+            }
         }
     }
 }

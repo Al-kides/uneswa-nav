@@ -15,6 +15,18 @@ import androidx.navigation.navArgument
 import com.uneswa.nav.data.LocationRepo
 import com.uneswa.nav.ui.*
 
+
+// ToDO : Add functionality to convert this into a student utility app more than just
+//a navigation app to justify the apk's large size.
+
+
+// Note: Not really sure how the UI will look but... actually, should not be an issue; Let me complete the basic functionality of
+// the navigation side of the app.
+
+// So, what I want and need is for app to give a gesture prompt, communicating to the user images slide left...
+//and instructions go down. So I am thinking along the lines of... vignette, then prompt user???
+// TODO: ^
+
 class MainActivity : ComponentActivity() {
     private val repo = LocationRepo()
 

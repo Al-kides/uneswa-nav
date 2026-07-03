@@ -1,67 +1,79 @@
 # UNESWA Location Guidance App
+**A Digital Navigation Solution for the Kwaluseni Campus**
 
-Android navigation app for the UNESWA Kwaluseni campus. Works fully offline.
+This Android application is a student-led project for **CSC300** by Lungelo Mhlanga and Vezokuhle Simelane, made to assist students and visitors navigate the campus using vivid landmarks combined with instructions.
+
+---
+
+## Key Features
+
+- **Offline-First**: Zero dependence on GPS or Internet. All directions and images are bundled locally.
+- **Landmark-Based Navigation**: Uses high-quality photographs and plain-language steps (e.g., "past the bamboo plants") to guide users.
+- **Abbreviation Solver**: Instantly maps cryptic timetable codes (MPH, SE, SLT, Com) to their full names and functional descriptions.
+- **Visual Recognition**: Every location features a "Wallpaper Thumbnail" on the search screen for instant identification.
+- **High Performance**: Optimized using Jetpack Compose and Coil (with HEIC support) for near-instant image loading.
+- **WIP**: Reducing apk size. Earlier wee used plain jpegs and PNGs and realized that their size would problematic so we changed to HEIC mid sessoin.
+
+## Tech Stack
+
+- **Language**: Kotlin
+- **UI Framework**: Jetpack Compose
+- **Image Loading**: Coil (Optimized for HEIC)
+- **Minimum Android**: 9.0 (API 28) — Required for native HEIC decoding.
+- **Theme**: Official UNESWA Red (`#B71C1C`) and Gold/Yellow (`#F9A825`).
+
+---
 
 ## Project Structure
 
 ```
 app/src/main/
 ├── assets/
-│   └── locations.json          ← ALL location data lives here
+│   ├── locations.json          ← ALL location, route, and abbreviation data
+│   └── drawable/               ← Optimized campus photos (.heic)
 ├── res/
-│   └── drawable/               ← Add your campus photos here
+│   ├── drawable/               ← App logo and splash screen assets
+│   └── values/                 ← UNESWA branding(if accepted by institution) and themes
 └── java/com/uneswa/nav/
-    ├── MainActivity.kt         ← Entry point + navigation graph
-    ├── Theme.kt                ← UNESWA colours (navy + gold)
+    ├── MainActivity.kt         ← Entry point + Splash Screen init
+    ├── Theme.kt                ← Brand colors and typography
     ├── data/
-    │   ├── Models.kt           ← Location, Approach data classes
-    │   └── LocationRepository  ← Loads + searches locations
+    │   ├── Models.kt           ← Data classes (Location, Approach, Step)
+    │   └── LocationRepo.kt     ← Search algorithm and data provider
     └── ui/
-        ├── ViewModels.kt       ← HomeViewModel, DirectionsViewModel
-        ├── HomeScreen.kt       ← Search + location list
-        └── DirectionsScreen.kt ← Step-by-step directions + photos
+        ├── ViewModels.kt       ← State management
+        ├── HomeScreen.kt       ← Search, list, and wallpaper cards
+        └── DirectionsScreen.kt ← Interactive step-by-step guidance
 ```
 
-## How to Add a New Location
+---
 
-Edit `assets/locations.json`. Copy an existing entry and change the fields.
-No code changes needed — the app reads everything from the JSON at startup.
+# How to Add/Update Locations
 
-```json
-{
-  "id": "library",
-  "fullName": "University Library",
-  "abbreviation": "Lib",
-  "description": "Main library with study rooms and computer lab.",
-  "photos": ["library_exterior"],
-  "approaches": [
-    {
-      "from": "Main Gate",
-      "steps": [
-        "Walk straight from the gate...",
-        "Turn left at the flagpole..."
-      ]
-    }
-  ]
-}
-```
+The app is content-driven. To add a new location or change directions:
 
-## How to Add Photos
+1.  **Edit the JSON**: Modify `app/src/main/assets/locations.json`.
+2.  **Update the Repo**: Synchronize changes in `app/src/main/java/com/uneswa/nav/data/LocationRepo.kt`.
+3.  **Add Photos**: Save new photos as `.heic` in `app/src/main/assets/drawable/` and name them following the pattern `locationid_X.heic`.
 
-1. Take a photo on campus
-2. Resize it to roughly 800×600px (keeps APK small)
-3. Save as a `.jpg` or `.png` in `app/src/main/res/drawable/`
-4. Name it exactly what you put in the JSON `photos` array
-   - e.g. JSON says `"mph_exterior"` → file is `drawable/mph_exterior.jpg`
-
-The app shows a "Photo coming soon" placeholder for any missing photos,
-so you can add them incrementally.
+---
 
 ## Building
 
-Open in Android Studio (Ladybug or newer), sync Gradle, run on device or emulator.
+1.  Open the project in **Android Studio (Ladybug or newer)**.
+2.  Sync Gradle dependencies.
+3.  Run on a physical device or emulator running **Android 9.0+**.
 
-Minimum Android version: 8.0 (API 26) — covers virtually all phones on campus that are android.
+*Note: For official release builds, ensure you sign the APK with a valid keystore.*
 
-## Two-Week Plan
-Ended up scraping this and tossing this into facebook, and getting google forms lol.
+---
+
+## 👥 Project Team
+
+- **Simelane Vezokuhle** (202301485)
+- **Mhlanga Lungelo** (202404067)
+- **Supervisor**: Mr. Ndumiso Eugene Khumalo (MSc)
+
+*Department of Computer Science, University of Eswatini.*
+
+LICENSE

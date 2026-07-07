@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-    <!-- Shrinking the logo to 48dp to make it much smaller,
-         similar to its size in the app's top bar.
-         This ensures it stays well within the circular safe zone. -->
+    <!-- Reduced the logo size so it fits perfectly on the white background
+         without being clipped by the system's circular mask. -->
     <item
-        android:width="48dp"
-        android:height="48dp"
+        android:width="100dp"
+        android:height="100dp"
         android:gravity="center">
         <bitmap
             android:src="@drawable/app_logo"

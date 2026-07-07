@@ -73,7 +73,7 @@ class LocationRepo {
             id     = "se",
             name   = "Sports Emporium",
             abbr   = "SE",
-            codes  = arrayOf("SE", "Emporium", "Sports", "King Graduation Party", "Events", "Gym", "Pool"),
+            codes  = arrayOf("SE", "Sports Emporium", "Emporium", "Sports", "King Graduation Party", "Events", "Gym", "Pool"),
             desc   = "The largest indoor venue on campus. Houses the university gym, swimming pool, and is next to the courts. Primary venue for graduation after parties.",
             photos = arrayOf("se_1", "se_2", "se_3", "se_4"),
             routes = arrayOf(
@@ -94,8 +94,8 @@ class LocationRepo {
             name   = "Engineering Block",
             abbr   = "Eng",
             codes  = arrayOf("EE", "Engineering", "Eng"),
-            desc   = "Faculty of Engineering lecture rooms and laboratories.",
-            photos = arrayOf("engineering_1", "engineering_2"),
+            desc   = "Faculty of Engineering lecture rooms and laboratories. It hosts the EE classes.",
+            photos = arrayOf("engineering_2", "engineering_1"),
             routes = arrayOf(
                 Approach(
                     from  = "Main Gate",

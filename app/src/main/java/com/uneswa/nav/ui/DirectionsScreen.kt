@@ -9,7 +9,7 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.TouchApp
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -21,7 +21,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
-import coil.decode.ImageDecoderDecoder
 import coil.request.CachePolicy
 import coil.request.ImageRequest
 
@@ -47,7 +46,7 @@ fun DirectionsScreen(vm: DirectionsVM, onBack: () -> Unit) {
                     title = {
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             AsyncImage(
-                                model = "file:///android_asset/drawable/logo.png",
+                                model = "file:///android_asset/drawable/logo.webp",
                                 contentDescription = "UNESWA Logo",
                                 modifier = Modifier.size(32.dp).padding(end = 8.dp)
                             )
@@ -103,7 +102,7 @@ fun DirectionsScreen(vm: DirectionsVM, onBack: () -> Unit) {
                     }
                 }
 
-                // Approach selector — only rendered when there are multiple routes
+                // Approach selector ->only rendered when there are multiple routes
                 if (loc.routes.size > 1) {
                     item {
                         Text("Coming from:", style = MaterialTheme.typography.titleMedium,
@@ -154,7 +153,7 @@ private fun OnboardingOverlay(onDismiss: () -> Unit) {
             modifier = Modifier.padding(32.dp)
         ) {
             Icon(
-                imageVector = Icons.Default.TouchApp,
+                imageVector = Icons.Default.Info,
                 contentDescription = null,
                 tint = Color.White,
                 modifier = Modifier.size(80.dp)
@@ -189,12 +188,13 @@ private fun OnboardingOverlay(onDismiss: () -> Unit) {
         }
     }
 }
-
+// Holding the old heic for backwards compatibility. TODO: Remove when transition is clean
 @Composable
 private fun Photo(name: String) {
     val ctx = LocalContext.current
     val resId = ctx.resources.getIdentifier(name, "drawable", ctx.packageName)
-    val assetPath = "file:///android_asset/drawable/$name.heic"
+    val webpPath = "file:///android_asset/drawable/$name.webp"
+    val heicPath = "file:///android_asset/drawable/$name.heic"
 
     Card(
         modifier  = Modifier.size(width = 240.dp, height = 160.dp),
@@ -202,8 +202,7 @@ private fun Photo(name: String) {
     ) {
         AsyncImage(
             model = ImageRequest.Builder(ctx)
-                .data(if (resId != 0) resId else assetPath)
-                .decoderFactory(ImageDecoderDecoder.Factory())
+                .data(if (resId != 0) resId else heicPath)
                 .memoryCachePolicy(CachePolicy.ENABLED)
                 .diskCachePolicy(CachePolicy.ENABLED)
                 .crossfade(false)
@@ -246,12 +245,11 @@ private fun Step(n: Int, step: com.uneswa.nav.data.Step) {
             ) {
                 val ctx = LocalContext.current
                 val resId = ctx.resources.getIdentifier(step.image, "drawable", ctx.packageName)
-                val assetPath = "file:///android_asset/drawable/${step.image}.heic"
+                val heicPath = "file:///android_asset/drawable/${step.image}.heic"
 
                 AsyncImage(
                     model = ImageRequest.Builder(ctx)
-                        .data(if (resId != 0) resId else assetPath)
-                        .decoderFactory(ImageDecoderDecoder.Factory())
+                        .data(if (resId != 0) resId else heicPath)
                         .memoryCachePolicy(CachePolicy.ENABLED)
                         .diskCachePolicy(CachePolicy.ENABLED)
                         .crossfade(false)

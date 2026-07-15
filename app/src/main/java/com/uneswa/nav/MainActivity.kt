@@ -14,15 +14,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.uneswa.nav.data.LocationRepo
 import com.uneswa.nav.ui.*
-
-
-// ToDO : Add functionality to convert this into a student utility app more than just
-//a navigation app to justify the apk's large size.
-
-
-// Note: Not really sure how the UI will look but... actually, should not be an issue; Let me complete the basic functionality of
-// the navigation side of the app.
-
+//all todos are addresses. check previous diff.
 class MainActivity : ComponentActivity() {
     private val repo = LocationRepo()
 
@@ -38,11 +30,19 @@ class MainActivity : ComponentActivity() {
 private fun Nav(repo: LocationRepo) {
     val nav = rememberNavController()
 
-    NavHost(nav, startDestination = "home") {
+    NavHost(nav, startDestination = "services") {
+
+        composable("services") {
+            StudentServicesScreen(onNavigate = { nav.navigate("home") })
+        }
 
         composable("home") {
             val vm: HomeVM = viewModel(factory = VMFactory(repo))
-            HomeScreen(vm, onPick = { nav.navigate("directions/$it") })
+            HomeScreen(
+                vm = vm,
+                onPick = { nav.navigate("directions/$it") },
+                onServices = { nav.popBackStack() } // Back to services
+            )
         }
 
         composable(

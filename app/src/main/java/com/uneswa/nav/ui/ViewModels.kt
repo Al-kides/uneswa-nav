@@ -23,12 +23,9 @@ class HomeVM(private val repo: LocationRepo) : ViewModel() {
 }
 
 class DirectionsVM(repo: LocationRepo, locId: String) : ViewModel() {
-
     val loc = repo.byId(locId)
-
     private val _idx = MutableStateFlow(0)
     val idx = _idx.asStateFlow()
-
     fun pick(i: Int) { _idx.update { i } }
 }
 

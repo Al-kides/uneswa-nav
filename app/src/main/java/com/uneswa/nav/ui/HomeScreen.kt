@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -15,14 +16,13 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
-import coil.decode.ImageDecoderDecoder
 import coil.request.CachePolicy
 import coil.request.ImageRequest
 import com.uneswa.nav.data.Location
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen(vm: HomeVM, onPick: (String) -> Unit) {
+fun HomeScreen(vm: HomeVM, onPick: (String) -> Unit, onServices: () -> Unit) {
     val q       by vm.q.collectAsState()
     val results by vm.results.collectAsState()
 
@@ -32,11 +32,16 @@ fun HomeScreen(vm: HomeVM, onPick: (String) -> Unit) {
                 title = {
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         AsyncImage(
-                            model = "file:///android_asset/drawable/logo.png",
+                            model = "file:///android_asset/drawable/logo.webp",
                             contentDescription = "UNESWA Logo",
                             modifier = Modifier.size(32.dp).padding(end = 8.dp)
                         )
                         Text("UNESWA Campus Guide")
+                    }
+                },
+                actions = {
+                    IconButton(onClick = onServices) {
+                        Icon(Icons.Default.Person, "Student Services")
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
@@ -87,12 +92,11 @@ private fun LocCard(loc: Location, onClick: () -> Unit) {
             if (lastPhoto != null) {
                 val ctx = LocalContext.current
                 val resId = ctx.resources.getIdentifier(lastPhoto, "drawable", ctx.packageName)
-                val assetPath = "file:///android_asset/drawable/$lastPhoto.heic"
+                val heicPath = "file:///android_asset/drawable/$lastPhoto.heic"
 
                 AsyncImage(
                     model = ImageRequest.Builder(ctx)
-                        .data(if (resId != 0) resId else assetPath)
-                        .decoderFactory(ImageDecoderDecoder.Factory())
+                        .data(if (resId != 0) resId else heicPath)
                         .memoryCachePolicy(CachePolicy.ENABLED)
                         .diskCachePolicy(CachePolicy.ENABLED)
                         .crossfade(false)

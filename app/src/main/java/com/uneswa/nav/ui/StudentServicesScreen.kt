@@ -10,61 +10,92 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.List
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.uneswa.nav.utils.WifiHelper
-import kotlinx.coroutines.launch
+import androidx.compose.ui.unit.sp
 
 data class ServiceItem(
     val title: String,
     val url: String,
-    val icon: ImageVector,
-    val needsWifi: Boolean = false
+    val icon: ImageVector
 )
-// this is where the student will land when they open the app. it will show them goodies
-//i.e registration for device, self help, student info system and what have you...
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun StudentServicesScreen(onNavigate: () -> Unit) {
+fun StudentServicesScreen(
+    onNavigate: () -> Unit,
+    onLaptops: () -> Unit,
+    isDark: Boolean?,
+    onToggleDark: (Boolean) -> Unit
+) {
     val ctx = LocalContext.current
-    val wifiHelper = remember { WifiHelper(ctx) }
-    val scope = rememberCoroutineScope()
     var showError by remember { mutableStateOf<String?>(null) }
-    var showRegDialog by remember { mutableStateOf(false) }
+
+    val currentIsDark = isDark ?: androidx.compose.foundation.isSystemInDarkTheme()
     
     val prefs = remember { ctx.getSharedPreferences("uneswa_nav_prefs", Context.MODE_PRIVATE) }
     var showOnboarding by remember { mutableStateOf(prefs.getBoolean("first_time_services", true)) }
 
     val services = listOf(
-        ServiceItem("Campus Navigator", "", Icons.Default.LocationOn), // entry point to our older implementation
-        ServiceItem("Registre phone", "http://kwnetreg.uniswa.sz/", Icons.Default.Edit, true),
-        ServiceItem("Connect your devices to wifi", "", Icons.Default.Share),
+        ServiceItem("Campus Navigator", "", Icons.Default.LocationOn), 
         ServiceItem("Laptop recommendation", "", Icons.Default.Star),
         ServiceItem("SIS Results", "https://sis.uneswa.ac.sz/", Icons.Default.Info),
         ServiceItem("Moodle", "https://learn.uneswa.ac.sz/", Icons.AutoMirrored.Filled.List),
         ServiceItem("Email", "https://kwmail.uneswa.ac.sz/", Icons.Default.Email),
         ServiceItem("iEnabler", "https://ienabler.uniswa.sz/pls/prodi04/w99pkg.mi_login?numtype=S", Icons.Default.AccountCircle),
-        ServiceItem("Get Psiphon", "", Icons.Default.Lock)
+        ServiceItem("Connect your devices to wifi", "", Icons.Default.Share)
     )
 
-    Box(Modifier.fillMaxSize()) {
+    Box(Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background)) {
         Scaffold(
             topBar = {
                 TopAppBar(
-                    title = { Text("UNESWA Student Services") }
+                    title = { Text("UNESWA Student Services") },
+                    actions = {
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            modifier = Modifier.padding(end = 8.dp)
+                        ) {
+                            Text(
+                                if (currentIsDark) "Dark" else "Light",
+                                style = MaterialTheme.typography.labelMedium,
+                                color = MaterialTheme.colorScheme.onPrimary,
+                                fontWeight = FontWeight.Bold
+                            )
+                            Spacer(Modifier.width(8.dp))
+                            Switch(
+                                checked = currentIsDark,
+                                onCheckedChange = onToggleDark,
+                                colors = SwitchDefaults.colors(
+                                    checkedThumbColor = MaterialTheme.colorScheme.secondary,
+                                    checkedTrackColor = MaterialTheme.colorScheme.secondary.copy(alpha = 0.5f),
+                                    uncheckedThumbColor = Color.White,
+                                    uncheckedTrackColor = Color.White.copy(alpha = 0.3f),
+                                    uncheckedBorderColor = Color.Transparent
+                                ),
+                                modifier = Modifier.scale(0.7f)
+                            )
+                        }
+                    },
+                    colors = TopAppBarDefaults.topAppBarColors(
+                        containerColor = MaterialTheme.colorScheme.primary,
+                        titleContentColor = MaterialTheme.colorScheme.onPrimary,
+                        actionIconContentColor = MaterialTheme.colorScheme.onPrimary
+                    )
                 )
-            }
+            },//to be honest, this is starting to feel like clay...
+            containerColor = MaterialTheme.colorScheme.background
         ) { pad ->
             Column(Modifier.padding(pad).fillMaxSize()) {
                 if (showError != null) {
@@ -87,16 +118,9 @@ fun StudentServicesScreen(onNavigate: () -> Unit) {
                             showError = null
                             when (svc.title) {
                                 "Campus Navigator" -> onNavigate()
-                                "Get Psiphon" -> wifiHelper.openPsiphonStore()
-                                "Connect your devices to wifi", "Laptop recommendation" -> {
+                                "Laptop recommendation" -> onLaptops()
+                                "Connect your devices to wifi" -> {
                                     showError = "Feature under construction. Use system settings."
-                                }
-                                "Registre phone" -> {
-                                    if (!wifiHelper.isStudentsWifi()) {
-                                        showError = "Connect to uniswawifi-students to register your device."
-                                    } else {
-                                        showRegDialog = true
-                                    }
                                 }
                                 else -> {
                                     ctx.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(svc.url)))
@@ -108,19 +132,6 @@ fun StudentServicesScreen(onNavigate: () -> Unit) {
             }
         }
 
-        if (showRegDialog) {
-            RegistrationDialog(
-                onDismiss = { showRegDialog = false },
-                onRegister = { id, bday ->
-                    showRegDialog = false
-                    scope.launch {
-                        val (ok, msg) = wifiHelper.registerDevice(id, bday)
-                        showError = msg
-                    }
-                }
-            )
-        }
-
         if (showOnboarding) {
             OnboardingOverlay {
                 showOnboarding = false
@@ -128,46 +139,6 @@ fun StudentServicesScreen(onNavigate: () -> Unit) {
             }
         }
     }
-}
-
-//todo account for peeps proly changing their passwords. But for now, doing birthday.
-@Composable
-fun RegistrationDialog(onDismiss: () -> Unit, onRegister: (String, String) -> Unit) {
-    var studentId by remember { mutableStateOf("") }
-    var birthday by remember { mutableStateOf("") }
-
-    AlertDialog(
-        onDismissRequest = onDismiss,
-        title = { Text("Device Registration") },
-        text = {
-            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                Text("Enter details to register your phone on the network.")
-                OutlinedTextField(
-                    value = studentId,
-                    onValueChange = { studentId = it },
-                    label = { Text("Student ID") },
-                    singleLine = true
-                )
-                OutlinedTextField(
-                    value = birthday,
-                    onValueChange = { birthday = it },
-                    label = { Text("Birthday (ddmmyyyy)") },
-                    placeholder = { Text("e.g. 12052001") },
-                    singleLine = true
-                )
-            }
-        },
-        confirmButton = {
-            Button(onClick = { onRegister(studentId, birthday) }) {
-                Text("Register")
-            }
-        },
-        dismissButton = {
-            TextButton(onClick = onDismiss) {
-                Text("Cancel")
-            }
-        }
-    )
 }
 
 @Composable
@@ -198,9 +169,9 @@ private fun OnboardingOverlay(onDismiss: () -> Unit) {
             )
             Spacer(Modifier.height(16.dp))
             Text(
-                text = "this is foor student servics.\n\n" +
+                text = "This is for student services.\n\n" +
                        "Tap any card to open the link or tool.\n\n" +
-                       "use the Navigater to find your way around cammpus.",
+                       "Use the Navigator to find your way around campus.",
                 style = MaterialTheme.typography.bodyLarge,
                 color = Color.White,
                 textAlign = TextAlign.Center
@@ -214,7 +185,7 @@ private fun OnboardingOverlay(onDismiss: () -> Unit) {
                 ),
                 modifier = Modifier.fillMaxWidth().height(56.dp)
             ) {
-                Text("Ggot it!", style = MaterialTheme.typography.titleMedium)
+                Text("Got it!", style = MaterialTheme.typography.titleMedium)
             }
         }
     }
@@ -224,16 +195,31 @@ private fun OnboardingOverlay(onDismiss: () -> Unit) {
 fun ServiceCard(svc: ServiceItem, onClick: () -> Unit) {
     Card(
         modifier = Modifier.fillMaxWidth().height(120.dp).clickable { onClick() },
-        elevation = CardDefaults.cardElevation(2.dp)
+        elevation = CardDefaults.cardElevation(2.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surface,
+            contentColor = MaterialTheme.colorScheme.onSurface
+        )
     ) {
         Column(
-            modifier = Modifier.fillMaxSize().padding(8.dp),
+            modifier = Modifier.fillMaxSize().padding(12.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            Icon(svc.icon, null, modifier = Modifier.size(32.dp), tint = MaterialTheme.colorScheme.primary)
-            Spacer(Modifier.height(8.dp))
-            Text(svc.title, textAlign = TextAlign.Center, style = MaterialTheme.typography.labelLarge, fontWeight = FontWeight.Bold)
+            Icon(
+                svc.icon,
+                null,
+                modifier = Modifier.size(36.dp),
+                tint = MaterialTheme.colorScheme.primary
+            )
+            Spacer(Modifier.height(12.dp))
+            Text(
+                svc.title,
+                textAlign = TextAlign.Center,
+                style = MaterialTheme.typography.titleSmall,
+                fontWeight = FontWeight.Bold,
+                lineHeight = 18.sp
+            )
         }
     }
 }

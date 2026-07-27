@@ -2,7 +2,7 @@ package com.uneswa.nav.data
 
 data class Step(
     val text: String,
-    val image: String? = null // name of image in assets/drawable, no extension
+    val image: String? = null
 )
 
 data class Approach(
@@ -14,11 +14,10 @@ data class Location(
     val id: String,
     val name: String,
     val abbr: String,
-    val codes: Array<String>,   // all timetable codes that map to this place
+    val codes: Array<String>,
     val desc: String,
-    val photos: Array<String>,  // drawable resource names, no extension
+    val photos: Array<String>,
     val routes: Array<Approach>
 ) {
-    // single string we run search against — built once, reused
     val corpus: String get() = "$name $abbr ${codes.joinToString(" ")} $desc".lowercase()
 }

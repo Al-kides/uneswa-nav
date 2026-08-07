@@ -63,7 +63,6 @@ private fun Nav(repo: LocationRepo, isDark: Boolean?, onToggleDark: (Boolean) ->
         composable("wifi") {
             WifiInstructionsScreen(onBack = { nav.popBackStack() })
         }
-
         composable("laptops") {
             LaptopRecommenderScreen(onBack = { nav.popBackStack() })
         }

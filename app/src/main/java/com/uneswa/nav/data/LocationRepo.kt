@@ -1,6 +1,5 @@
 package com.uneswa.nav.data
 
-// Standard DP Levenshtein — O(m*n) time, O(m*n) space.
 private fun lev(a: String, b: String): Int {
     val m = a.length; val n = b.length
     val d = Array(m + 1) { IntArray(n + 1) }
@@ -73,8 +72,8 @@ class LocationRepo {
             id     = "se",
             name   = "Sports Emporium",
             abbr   = "SE",
-            codes  = arrayOf("SE", "Sports Emporium", "Emporium", "Sports", "King Graduation Party", "Events", "Gym", "Pool"),
-            desc   = "The largest indoor venue on campus. Houses the university gym, swimming pool, and is next to the courts. Primary venue for graduation after parties.",
+            codes  = arrayOf("SE", "Sports Emporium", "Emporium", "Sports", "King's Graduation Party", "Events", "Gym", "Pool"),
+            desc   = "The largest indoor venue on campus. Houses the university gym, swimming pool, and is next to the courts. Primary venue for graduation ceremonies.",
             photos = arrayOf("se_1", "se_2", "se_3", "se_4"),
             routes = arrayOf(
                 Approach(
@@ -229,7 +228,7 @@ class LocationRepo {
             name   = "Multi-Purpose Hall (MPH)",
             abbr   = "MPH",
             codes  = arrayOf("MPH", "Hall", "Basketball", "Volleyball"),
-            desc   = "The second largest indoor venue on campus, sometimes used for major events and but typically basketball and volleyball.",
+            desc   = "The second largest indoor venue on campus, sometimes used for major events but typically for basketball and volleyball.",
             photos = arrayOf("mph_1", "mph_2", "mph_3", "mph_4", "mph_5", "mph_6", "mph_7"),
             routes = arrayOf(
                 Approach(
@@ -251,7 +250,7 @@ class LocationRepo {
             name   = "New Office",
             abbr   = "New Office",
             codes  = arrayOf("New Office"),
-            desc   = "Recently constructed office space for university staff. Faculty of Science Tutor Resides there",
+            desc   = "Recently constructed office space for university staff. Faculty of Science Tutor resides there.",
             photos = arrayOf("new_office_1", "new_office_2", "new_office_3", "new_office_4", "new_office_5", "new_office_6", "new_office_7", "new_office_8", "new_office_9", "new_office_10"),
             routes = arrayOf(
                 Approach(
@@ -297,9 +296,9 @@ class LocationRepo {
 
         Location(
             id     = "peer_counselling",
-            name   = "Peer Counseling Office",
+            name   = "Peer Counselling Office",
             abbr   = "PC",
-            codes  = arrayOf("Peer Counseling", "Counselling"),
+            codes  = arrayOf("Peer Counselling", "Counselling"),
             desc   = "Provides confidential peer support and counselling services for students.",
             photos = arrayOf("peer_counselling_1", "peer_counselling_2", "peer_counselling_3", "peer_counselling_4", "peer_counselling_5", "peer_counselling_6", "peer_counselling_7"),
             routes = arrayOf(
@@ -339,10 +338,10 @@ class LocationRepo {
 
         Location(
             id     = "slt",
-            name   = "Science Lecture Theater (SLT)",
+            name   = "Science Lecture Theatre (SLT)",
             abbr   = "SLT",
             codes  = arrayOf("SLT", "SLT 1", "SLT 2"),
-            desc   = "Moderate-sized lecture theaters (seating 50+ people) for science and general presentations.",
+            desc   = "Moderate-sized lecture theatres (seating 50+ people) for science and general presentations.",
             photos = arrayOf("slt_1", "slt_2", "slt_3", "slt_4", "slt_5", "slt_6"),
             routes = arrayOf(
                 Approach(

@@ -4,6 +4,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Search
@@ -46,10 +47,12 @@ fun HomeScreen(vm: HomeVM, onPick: (String) -> Unit, onServices: () -> Unit) {
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor      = MaterialTheme.colorScheme.primary,
-                    titleContentColor   = MaterialTheme.colorScheme.onPrimary
+                    titleContentColor   = MaterialTheme.colorScheme.onPrimary,
+                    actionIconContentColor = MaterialTheme.colorScheme.onPrimary
                 )
             )
-        }
+        },
+        containerColor = MaterialTheme.colorScheme.background
     ) { pad ->
         Column(Modifier.fillMaxSize().padding(pad)) {
 
@@ -83,20 +86,23 @@ fun HomeScreen(vm: HomeVM, onPick: (String) -> Unit, onServices: () -> Unit) {
 private fun LocCard(loc: Location, onClick: () -> Unit) {
     Card(
         modifier  = Modifier.fillMaxWidth().clickable(onClick = onClick),
-        elevation = CardDefaults.cardElevation(2.dp)
+        elevation = CardDefaults.cardElevation(2.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surface,
+            contentColor = MaterialTheme.colorScheme.onSurface
+        ),
+        shape = RoundedCornerShape(16.dp)
     ) {
         Column {
-            // "Wallpaper" thumbnail - using the last image in the list
-            // For clarity, images are stored sequentially. The last image is the final location
             val lastPhoto = loc.photos.lastOrNull()
             if (lastPhoto != null) {
                 val ctx = LocalContext.current
                 val resId = ctx.resources.getIdentifier(lastPhoto, "drawable", ctx.packageName)
-                val heicPath = "file:///android_asset/drawable/$lastPhoto.heic"
+                val webpPath = "file:///android_asset/drawable/$lastPhoto.webp"
 
                 AsyncImage(
                     model = ImageRequest.Builder(ctx)
-                        .data(if (resId != 0) resId else heicPath)
+                        .data(if (resId != 0) resId else webpPath)
                         .memoryCachePolicy(CachePolicy.ENABLED)
                         .diskCachePolicy(CachePolicy.ENABLED)
                         .crossfade(false)
@@ -109,7 +115,6 @@ private fun LocCard(loc: Location, onClick: () -> Unit) {
 
             Row(Modifier.padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
 
-                // Abbreviation badge
                 Surface(
                     color    = MaterialTheme.colorScheme.primaryContainer,
                     shape    = MaterialTheme.shapes.small,

@@ -71,8 +71,6 @@ fun DirectionsScreen(vm: DirectionsVM, onBack: () -> Unit) {
                 contentPadding  = PaddingValues(16.dp),
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-
-                // Header card: building name and description
                 item {
                     Card(colors = CardDefaults.cardColors(
                         containerColor = MaterialTheme.colorScheme.primaryContainer
@@ -90,7 +88,6 @@ fun DirectionsScreen(vm: DirectionsVM, onBack: () -> Unit) {
                     }
                 }
 
-                // Photo strip — skipped entirely if no photos available
                 if (loc.photos.isNotEmpty()) {
                     item {
                         Text("Photos", style = MaterialTheme.typography.titleMedium,
@@ -102,7 +99,6 @@ fun DirectionsScreen(vm: DirectionsVM, onBack: () -> Unit) {
                     }
                 }
 
-                // Approach selector ->only rendered when there are multiple routes
                 if (loc.routes.size > 1) {
                     item {
                         Text("Coming from:", style = MaterialTheme.typography.titleMedium,
@@ -188,13 +184,11 @@ private fun OnboardingOverlay(onDismiss: () -> Unit) {
         }
     }
 }
-// Holding the old heic for backwards compatibility. TODO: Remove when transition is clean
 @Composable
 private fun Photo(name: String) {
     val ctx = LocalContext.current
     val resId = ctx.resources.getIdentifier(name, "drawable", ctx.packageName)
     val webpPath = "file:///android_asset/drawable/$name.webp"
-    val heicPath = "file:///android_asset/drawable/$name.heic"
 
     Card(
         modifier  = Modifier.size(width = 240.dp, height = 160.dp),
@@ -202,7 +196,7 @@ private fun Photo(name: String) {
     ) {
         AsyncImage(
             model = ImageRequest.Builder(ctx)
-                .data(if (resId != 0) resId else heicPath)
+                .data(if (resId != 0) resId else webpPath)
                 .memoryCachePolicy(CachePolicy.ENABLED)
                 .diskCachePolicy(CachePolicy.ENABLED)
                 .crossfade(false)
@@ -245,11 +239,11 @@ private fun Step(n: Int, step: com.uneswa.nav.data.Step) {
             ) {
                 val ctx = LocalContext.current
                 val resId = ctx.resources.getIdentifier(step.image, "drawable", ctx.packageName)
-                val heicPath = "file:///android_asset/drawable/${step.image}.heic"
+                val webpPath = "file:///android_asset/drawable/${step.image}.webp"
 
                 AsyncImage(
                     model = ImageRequest.Builder(ctx)
-                        .data(if (resId != 0) resId else heicPath)
+                        .data(if (resId != 0) resId else webpPath)
                         .memoryCachePolicy(CachePolicy.ENABLED)
                         .diskCachePolicy(CachePolicy.ENABLED)
                         .crossfade(false)

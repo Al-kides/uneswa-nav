@@ -1,11 +1,12 @@
 package com.uneswa.nav
 
+import android.content.Context
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -14,26 +15,57 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.uneswa.nav.data.LocationRepo
 import com.uneswa.nav.ui.*
-//all todos are addresses. check previous diff.
+
 class MainActivity : ComponentActivity() {
     private val repo = LocationRepo()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         installSplashScreen()
         super.onCreate(savedInstanceState)
+        
+        val prefs = getSharedPreferences("uneswa_nav_prefs", Context.MODE_PRIVATE)
+        
         enableEdgeToEdge()
-        setContent { AppTheme { Nav(repo) } }
+        setContent {
+            val initialDark = remember {
+                if (prefs.contains("is_dark_mode")) {
+                    prefs.getBoolean("is_dark_mode", false)
+                } else null
+            }
+            var isDark by remember { mutableStateOf<Boolean?>(initialDark) }
+            
+            AppTheme(useDarkTheme = isDark ?: androidx.compose.foundation.isSystemInDarkTheme()) {
+                Nav(repo, isDark) { dark ->
+                    isDark = dark
+                    prefs.edit().putBoolean("is_dark_mode", dark).apply()
+                }
+            }
+        }
     }
 }
 
 @Composable
-private fun Nav(repo: LocationRepo) {
+private fun Nav(repo: LocationRepo, isDark: Boolean?, onToggleDark: (Boolean) -> Unit) {
     val nav = rememberNavController()
 
     NavHost(nav, startDestination = "services") {
 
         composable("services") {
-            StudentServicesScreen(onNavigate = { nav.navigate("home") })
+            StudentServicesScreen(
+                onNavigate = { nav.navigate("home") },
+                onLaptops = { nav.navigate("laptops") },
+                onWifi = { nav.navigate("wifi") },
+                isDark = isDark,
+                onToggleDark = onToggleDark
+            )
+        }
+
+        composable("wifi") {
+            WifiInstructionsScreen(onBack = { nav.popBackStack() })
+        }
+
+        composable("laptops") {
+            LaptopRecommenderScreen(onBack = { nav.popBackStack() })
         }
 
         composable("home") {

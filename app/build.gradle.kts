@@ -10,7 +10,7 @@ android {
 
     defaultConfig {
         applicationId = "com.uneswa.nav"
-        minSdk        = 28   // HEIC via ImageDecoder requires 28+
+        minSdk        = 28
         targetSdk     = 35
         versionCode   = 1
         versionName   = "1.0"

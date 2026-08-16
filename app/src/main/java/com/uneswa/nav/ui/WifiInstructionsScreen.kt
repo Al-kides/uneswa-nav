@@ -19,9 +19,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalHapticFeedback
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
@@ -33,6 +37,7 @@ import coil.compose.AsyncImage
 fun WifiInstructionsScreen(onBack: () -> Unit) {
     var selectedTab by remember { mutableStateOf<OsType?>(null) }
     var zoomImage by remember { mutableStateOf<String?>(null) }
+    val haptic = LocalHapticFeedback.current
 
     Scaffold(
         topBar = {
@@ -69,7 +74,10 @@ fun WifiInstructionsScreen(onBack: () -> Unit) {
                     )
                 }
                 items(OsType.entries) { type ->
-                    OsSelectionCard(type) { selectedTab = type }
+                    OsSelectionCard(type) {
+                        haptic.performHapticFeedback(HapticFeedbackType.LongPress)
+                        selectedTab = type
+                    }
                 }
             } else {
                 item {
@@ -105,15 +113,20 @@ fun WifiInstructionsScreen(onBack: () -> Unit) {
 private fun RegistrationCard(onImageClick: (String) -> Unit) {
     var expanded by remember { mutableStateOf(false) }
     val ctx = LocalContext.current
+    val haptic = LocalHapticFeedback.current
 
     Card(
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.secondaryContainer
-        )
+        ),
+        shape = MaterialTheme.shapes.large
     ) {
         Column(Modifier.padding(16.dp)) {
             Row(
-                Modifier.clickable { expanded = !expanded },
+                Modifier.clickable {
+                    haptic.performHapticFeedback(HapticFeedbackType.LongPress)
+                    expanded = !expanded
+                },
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Icon(Icons.Default.Info, null, tint = MaterialTheme.colorScheme.secondary)
@@ -124,16 +137,11 @@ private fun RegistrationCard(onImageClick: (String) -> Unit) {
             
             AnimatedVisibility(visible = expanded) {
                 Column(Modifier.padding(top = 16.dp)) {
-                    Text("After connecting, you MUST register your device to get internet access.")
+                    Text("After connecting, you MUST register your device to get internet access at full power.")
                     Spacer(Modifier.height(8.dp))
-                    Text(
-                        "http://kwnetreg.uniswa.sz",
-                        color = MaterialTheme.colorScheme.primary,
-                        fontWeight = FontWeight.Bold,
-                        modifier = Modifier.clickable {
-                            ctx.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("http://kwnetreg.uniswa.sz")))
-                        }
-                    )
+                    CopyableText(text = "http://kwnetreg.uniswa.sz") {
+                        ctx.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("http://kwnetreg.uniswa.sz")))
+                    }
                     Spacer(Modifier.height(16.dp))
                     InstructionStep(
                         WifiStep("Registration Portal", "This is the page you'll see. Log in with your student details.", "screenshot_2026_08_07_125026"),
@@ -144,7 +152,7 @@ private fun RegistrationCard(onImageClick: (String) -> Unit) {
             
             if (!expanded) {
                 Text(
-                    "Register at kwnetreg.uniswa.sz after connecting.",
+                    "Register at kwnetreg.uniswa.sz after connecting for full power.",
                     style = MaterialTheme.typography.bodySmall,
                     modifier = Modifier.padding(top = 8.dp)
                 )
@@ -160,7 +168,8 @@ private fun OsSelectionCard(type: OsType, onClick: () -> Unit) {
             .fillMaxWidth()
             .height(80.dp)
             .clickable { onClick() },
-        elevation = CardDefaults.cardElevation(2.dp)
+        elevation = CardDefaults.cardElevation(2.dp),
+        shape = MaterialTheme.shapes.medium
     ) {
         Box(Modifier.fillMaxSize(), contentAlignment = Alignment.CenterStart) {
             Text(
@@ -192,7 +201,8 @@ private fun InstructionStep(step: WifiStep, onImageClick: (String) -> Unit) {
                     .fillMaxWidth()
                     .height(240.dp)
                     .clickable { onImageClick(step.image) },
-                elevation = CardDefaults.cardElevation(1.dp)
+                elevation = CardDefaults.cardElevation(1.dp),
+                shape = MaterialTheme.shapes.medium
             ) {
                 AsyncImage(
                     model = "file:///android_asset/drawable/${step.image}.webp",
@@ -209,6 +219,7 @@ private fun InstructionStep(step: WifiStep, onImageClick: (String) -> Unit) {
 private fun TroubleshootingSection(os: OsType, onImageClick: (String) -> Unit) {
     var expanded by remember { mutableStateOf(false) }
     val ctx = LocalContext.current
+    val haptic = LocalHapticFeedback.current
     
     val title = when(os) {
         OsType.ANDROID -> "Apps not loading? Use Psiphon"
@@ -218,11 +229,15 @@ private fun TroubleshootingSection(os: OsType, onImageClick: (String) -> Unit) {
 
     Card(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.tertiaryContainer)
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.tertiaryContainer),
+        shape = MaterialTheme.shapes.large
     ) {
         Column(Modifier.padding(16.dp)) {
             Row(
-                Modifier.clickable { expanded = !expanded },
+                Modifier.clickable {
+                    haptic.performHapticFeedback(HapticFeedbackType.LongPress)
+                    expanded = !expanded
+                },
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(title, Modifier.weight(1f), fontWeight = FontWeight.Bold)
@@ -233,10 +248,11 @@ private fun TroubleshootingSection(os: OsType, onImageClick: (String) -> Unit) {
                 Column(Modifier.padding(top = 16.dp)) {
                     when (os) {
                         OsType.ANDROID -> {
-                            Text("If WhatsApp or other apps won't load even when connected, Psiphon Pro can bypass the proxy restrictions.")
+                            Text("If WhatsApp or other apps won't load even when connected, Psiphon Pro is needed for free-er internet access.")
                             Spacer(Modifier.height(16.dp))
                             Button(
                                 onClick = {
+                                    haptic.performHapticFeedback(HapticFeedbackType.LongPress)
                                     val intent = ctx.packageManager.getLaunchIntentForPackage("com.psiphon3.subscription")
                                     if (intent != null) {
                                         ctx.startActivity(intent)
@@ -244,16 +260,16 @@ private fun TroubleshootingSection(os: OsType, onImageClick: (String) -> Unit) {
                                         ctx.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=com.psiphon3.subscription")))
                                     }
                                 },
-                                modifier = Modifier.fillMaxWidth()
+                                modifier = Modifier.fillMaxWidth(),
+                                shape = MaterialTheme.shapes.medium
                             ) {
                                 val isInstalled = ctx.packageManager.getLaunchIntentForPackage("com.psiphon3.subscription") != null
                                 Text(if (isInstalled) "Open Psiphon Pro" else "Install Psiphon Pro")
                             }
                             Spacer(Modifier.height(16.dp))
-                            Text("Configuration:", fontWeight = FontWeight.Bold)
-                            Text("• Proxy Settings -> Connect through an HTTP Proxy: ON\n" +
-                                 "• Host Address: proxy02.uniswa.sz\n" +
-                                 "• Port: 3128")
+                            Text("Configuration (Tap to copy):", fontWeight = FontWeight.Bold)
+                            CopyableText("proxy02.uniswa.sz")
+                            CopyableText("3128")
                             Spacer(Modifier.height(16.dp))
                             InstructionStep(
                                 WifiStep("Configure Psiphon", "Set the proxy host and port in Psiphon's settings as shown.", "screenshot_20260807_130154_psiphon_pro"),
@@ -261,11 +277,18 @@ private fun TroubleshootingSection(os: OsType, onImageClick: (String) -> Unit) {
                             )
                         }
                         OsType.WINDOWS -> {
+                            Text("Setup Script Address (Tap to copy):", fontWeight = FontWeight.Bold)
+                            CopyableText("www.uniswa.sz/uniswa/uniswaproxy.pac")
+                            Spacer(Modifier.height(16.dp))
                             WindowsTroubleshooting.forEach { step ->
                                 InstructionStep(step, onImageClick = onImageClick)
                             }
                         }
                         OsType.LINUX -> {
+                            Text("Proxy Variables (Tap to copy):", fontWeight = FontWeight.Bold)
+                            CopyableText("export http_proxy='proxy02.uniswa.sz:3128'")
+                            CopyableText("export https_proxy='proxy02.uniswa.sz:3128'")
+                            Spacer(Modifier.height(16.dp))
                             LinuxTroubleshooting.forEach { step ->
                                 InstructionStep(step, onImageClick = onImageClick)
                             }
@@ -273,6 +296,33 @@ private fun TroubleshootingSection(os: OsType, onImageClick: (String) -> Unit) {
                     }
                 }
             }
+        }
+    }
+}
+
+@Composable
+private fun CopyableText(text: String, onClick: (() -> Unit)? = null) {
+    val clipboard = LocalClipboardManager.current
+    val haptic = LocalHapticFeedback.current
+    val context = LocalContext.current
+    
+    Surface(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 4.dp)
+            .clickable {
+                haptic.performHapticFeedback(HapticFeedbackType.LongPress)
+                clipboard.setText(AnnotatedString(text))
+                android.widget.Toast.makeText(context, "Copied to clipboard", android.widget.Toast.LENGTH_SHORT).show()
+                onClick?.invoke()
+            },
+        color = MaterialTheme.colorScheme.surface.copy(alpha = 0.5f),
+        shape = MaterialTheme.shapes.small,
+        border = androidx.compose.foundation.BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
+    ) {
+        Row(Modifier.padding(12.dp), verticalAlignment = Alignment.CenterVertically) {
+            Text(text, modifier = Modifier.weight(1f), style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.primary)
+            Icon(Icons.Default.Info, null, modifier = Modifier.size(16.dp), tint = MaterialTheme.colorScheme.primary)
         }
     }
 }
@@ -362,7 +412,8 @@ val WindowsTroubleshooting = listOf(
 val AndroidInstructions = listOf(
     WifiStep("Select Network", "Settings -> Wi-Fi -> Tap 'uniswawifi-students'.", "screenshot_20260807_125659_one_ui_home"),
     WifiStep("Identity", "Identity: Your Student Number\nCA Certificate: Don't validate", "screenshot_20260807_125721_settings"),
-    WifiStep("EAP Settings", "EAP Method: PEAP\nPhase 2: MSCHAPV2", "screenshot_20260807_125732_settings")
+    WifiStep("EAP Settings", "EAP Method: PEAP\nPhase 2: MSCHAPV2", "screenshot_20260807_125732_settings"),
+    WifiStep("MAC Address", "Set MAC address type to 'Phone MAC' (Turn off 'Randomized/Private MAC'). Registration won't work with randomized MACs.")
 )
 
 val LinuxInstructions = listOf(

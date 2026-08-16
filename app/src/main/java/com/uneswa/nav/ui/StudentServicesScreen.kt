@@ -3,7 +3,9 @@ package com.uneswa.nav.ui
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import androidx.compose.foundation.background
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -19,7 +21,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -41,12 +45,13 @@ fun StudentServicesScreen(
     onToggleDark: (Boolean) -> Unit
 ) {
     val ctx = LocalContext.current
+    val haptic = LocalHapticFeedback.current
     var showError by remember { mutableStateOf<String?>(null) }
 
     val currentIsDark = isDark ?: androidx.compose.foundation.isSystemInDarkTheme()
     
     val prefs = remember { ctx.getSharedPreferences("uneswa_nav_prefs", Context.MODE_PRIVATE) }
-    var showOnboarding by remember { mutableStateOf(prefs.getBoolean("first_time_services", true)) }
+    var showBanner by remember { mutableStateOf(prefs.getBoolean("first_time_services", true)) }
 
     val services = listOf(
         ServiceItem("Campus Navigator", "", Icons.Default.LocationOn), 
@@ -58,141 +63,110 @@ fun StudentServicesScreen(
         ServiceItem("Connect your devices to wifi", "", Icons.Default.Share)
     )
 
-    Box(Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background)) {
-        Scaffold(
-            topBar = {
-                TopAppBar(
-                    title = { Text("UNESWA Student Services") },
-                    actions = {
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically,
-                            modifier = Modifier.padding(end = 8.dp)
-                        ) {
-                            Text(
-                                if (currentIsDark) "Dark" else "Light",
-                                style = MaterialTheme.typography.labelMedium,
-                                color = MaterialTheme.colorScheme.onPrimary,
-                                fontWeight = FontWeight.Bold
-                            )
-                            Spacer(Modifier.width(8.dp))
-                            Switch(
-                                checked = currentIsDark,
-                                onCheckedChange = onToggleDark,
-                                colors = SwitchDefaults.colors(
-                                    checkedThumbColor = MaterialTheme.colorScheme.secondary,
-                                    checkedTrackColor = MaterialTheme.colorScheme.secondary.copy(alpha = 0.5f),
-                                    uncheckedThumbColor = Color.White,
-                                    uncheckedTrackColor = Color.White.copy(alpha = 0.3f),
-                                    uncheckedBorderColor = Color.Transparent
-                                ),
-                                modifier = Modifier.scale(0.7f)
-                            )
-                        }
-                    },
-                    colors = TopAppBarDefaults.topAppBarColors(
-                        containerColor = MaterialTheme.colorScheme.primary,
-                        titleContentColor = MaterialTheme.colorScheme.onPrimary,
-                        actionIconContentColor = MaterialTheme.colorScheme.onPrimary
-                    )
-                )
-            },//to be honest, this is starting to feel like clay...
-            containerColor = MaterialTheme.colorScheme.background
-        ) { pad ->
-            Column(Modifier.padding(pad).fillMaxSize()) {
-                if (showError != null) {
-                    Card(
-                        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.errorContainer),
-                        modifier = Modifier.padding(16.dp).fillMaxWidth()
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { Text("UNESWA Student Services") },
+                actions = {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier.padding(end = 8.dp)
                     ) {
-                        Text(showError!!, color = MaterialTheme.colorScheme.onErrorContainer, modifier = Modifier.padding(16.dp))
+                        Text(
+                            if (currentIsDark) "Dark" else "Light",
+                            style = MaterialTheme.typography.labelMedium,
+                            color = MaterialTheme.colorScheme.onPrimary,
+                            fontWeight = FontWeight.Bold
+                        )
+                        Spacer(Modifier.width(8.dp))
+                        Switch(
+                            checked = currentIsDark,
+                            onCheckedChange = {
+                                haptic.performHapticFeedback(HapticFeedbackType.LongPress)
+                                onToggleDark(it)
+                            },
+                            colors = SwitchDefaults.colors(
+                                checkedThumbColor = MaterialTheme.colorScheme.secondary,
+                                checkedTrackColor = MaterialTheme.colorScheme.secondary.copy(alpha = 0.5f),
+                                uncheckedThumbColor = Color.White,
+                                uncheckedTrackColor = Color.White.copy(alpha = 0.3f),
+                                uncheckedBorderColor = Color.Transparent
+                            ),
+                            modifier = Modifier.scale(0.7f)
+                        )
+                    }
+                },
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.primary,
+                    titleContentColor = MaterialTheme.colorScheme.onPrimary,
+                    actionIconContentColor = MaterialTheme.colorScheme.onPrimary
+                )
+            )
+        },
+        containerColor = MaterialTheme.colorScheme.background
+    ) { pad ->
+        Column(Modifier.padding(pad).fillMaxSize()) {
+            AnimatedVisibility(
+                visible = showBanner,
+                enter = slideInVertically { -it },
+                exit = slideOutVertically { -it }
+            ) {
+                Card(
+                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer),
+                    modifier = Modifier.padding(16.dp).fillMaxWidth()
+                ) {
+                    Row(Modifier.padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
+                        Column(Modifier.weight(1f)) {
+                            Text("Welcome to Uneswa Nav", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
+                            Text("Tap any card to open student tools. Use the Navigator to find your way.", style = MaterialTheme.typography.bodyMedium)
+                        }
+                        TextButton(onClick = {
+                            showBanner = false
+                            prefs.edit().putBoolean("first_time_services", false).apply()
+                        }) {
+                            Text("Got it")
+                        }
                     }
                 }
+            }
 
-                LazyVerticalGrid(
-                    columns = GridCells.Fixed(2),
-                    contentPadding = PaddingValues(16.dp),
-                    horizontalArrangement = Arrangement.spacedBy(16.dp),
-                    verticalArrangement = Arrangement.spacedBy(16.dp)
+            if (showError != null) {
+                Card(
+                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.errorContainer),
+                    modifier = Modifier.padding(16.dp).fillMaxWidth()
                 ) {
-                    items(services) { svc ->
-                        ServiceCard(svc) {
-                            showError = null
-                            when (svc.title) {
-                                "Campus Navigator" -> onNavigate()
-                                "Laptop recommendation" -> onLaptops()
-                                "Connect your devices to wifi" -> onWifi()
-                                "Moodle" -> {
-                                    val intent = ctx.packageManager.getLaunchIntentForPackage("com.moodle.moodlemobile")
-                                    if (intent != null) {
-                                        ctx.startActivity(intent)
-                                    } else {
-                                        ctx.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(svc.url)))
-                                    }
-                                }
-                                else -> {
+                    Text(showError!!, color = MaterialTheme.colorScheme.onErrorContainer, modifier = Modifier.padding(16.dp))
+                }
+            }
+
+            LazyVerticalGrid(
+                columns = GridCells.Fixed(2),
+                contentPadding = PaddingValues(16.dp),
+                horizontalArrangement = Arrangement.spacedBy(16.dp),
+                verticalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                items(services, key = { it.title }) { svc ->
+                    ServiceCard(svc) {
+                        haptic.performHapticFeedback(HapticFeedbackType.LongPress)
+                        showError = null
+                        when (svc.title) {
+                            "Campus Navigator" -> onNavigate()
+                            "Laptop recommendation" -> onLaptops()
+                            "Connect your devices to wifi" -> onWifi()
+                            "Moodle" -> {
+                                val intent = ctx.packageManager.getLaunchIntentForPackage("com.moodle.moodlemobile")
+                                if (intent != null) {
+                                    ctx.startActivity(intent)
+                                } else {
                                     ctx.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(svc.url)))
                                 }
+                            }
+                            else -> {
+                                ctx.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(svc.url)))
                             }
                         }
                     }
                 }
-            }
-        }
-
-        if (showOnboarding) {
-            OnboardingOverlay {
-                showOnboarding = false
-                prefs.edit().putBoolean("first_time_services", false).apply()
-            }
-        }
-    }
-}
-
-@Composable
-private fun OnboardingOverlay(onDismiss: () -> Unit) {
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Color.Black.copy(alpha = 0.85f))
-            .clickable { onDismiss() },
-        contentAlignment = Alignment.Center
-    ) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier.padding(32.dp)
-        ) {
-            Icon(
-                imageVector = Icons.Default.Info,
-                contentDescription = null,
-                tint = Color.White,
-                modifier = Modifier.size(80.dp)
-            )
-            Spacer(Modifier.height(24.dp))
-            Text(
-                text = "Welcome to Uneswa Nav",
-                style = MaterialTheme.typography.headlineMedium,
-                color = Color.White,
-                fontWeight = FontWeight.Bold
-            )
-            Spacer(Modifier.height(16.dp))
-            Text(
-                text = "This is for student services.\n\n" +
-                       "Tap any card to open the link or tool.\n\n" +
-                       "Use the Navigator to find your way around campus.",
-                style = MaterialTheme.typography.bodyLarge,
-                color = Color.White,
-                textAlign = TextAlign.Center
-            )
-            Spacer(Modifier.height(48.dp))
-            Button(
-                onClick = onDismiss,
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = MaterialTheme.colorScheme.secondary,
-                    contentColor = MaterialTheme.colorScheme.onSecondary
-                ),
-                modifier = Modifier.fillMaxWidth().height(56.dp)
-            ) {
-                Text("Got it!", style = MaterialTheme.typography.titleMedium)
             }
         }
     }
@@ -203,6 +177,7 @@ fun ServiceCard(svc: ServiceItem, onClick: () -> Unit) {
     Card(
         modifier = Modifier.fillMaxWidth().height(120.dp).clickable { onClick() },
         elevation = CardDefaults.cardElevation(2.dp),
+        shape = MaterialTheme.shapes.medium,
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surface,
             contentColor = MaterialTheme.colorScheme.onSurface

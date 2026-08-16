@@ -1,8 +1,7 @@
 import os
 import sys
-from PIL import Image #todo, add PNG, jpeg... 
+from PIL import Image
 
-#heic to webp converter. applciation of big J's suggestion (massive hack and win)
 try:
     from pillow_heif import register_heif_opener
     register_heif_opener()
@@ -22,7 +21,6 @@ def convert_images(source_dir, target_dir):
             if filename == "logo.webp": continue 
 
             source_path = os.path.join(source_dir, filename)
-            #snitize name for Android
             base_name = os.path.splitext(filename)[0]
             clean_name = "".join([c.lower() if c.isalnum() else "_" for c in base_name])
             while "__" in clean_name: clean_name = clean_name.replace("__", "_")
@@ -52,7 +50,5 @@ def convert_images(source_dir, target_dir):
     print(f"Approximate space saved: {saved_size // (1024*1024)} MB")
 
 if __name__ == "__main__":
-    #just change the location to where you decide to move asssets... or if you generally have stuff in another folder you wanna convert
-    #because ypu know... htis isn't just ... uneswa nav thing. it is an heic to webp..
     assets_dir = "./app/src/main/assets/drawable"
     convert_images(assets_dir, assets_dir)

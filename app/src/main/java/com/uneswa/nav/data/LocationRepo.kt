@@ -23,6 +23,18 @@ private fun matches(q: String, target: String): Boolean {
 }
 
 class LocationRepo {
+    private val tokenIndex: Map<String, List<Location>> by lazy {
+        val index = mutableMapOf<String, MutableList<Location>>()
+        all.forEach { loc ->
+            loc.corpus.split("\\s+".toRegex()).forEach { token ->
+                val t = token.lowercase().trim()
+                if (t.isNotEmpty()) {
+                    index.getOrPut(t) { mutableListOf() }.add(loc)
+                }
+            }
+        }
+        index
+    }
 
     val all: Array<Location> = arrayOf(
 
@@ -413,14 +425,21 @@ class LocationRepo {
 
     fun search(raw: String): Array<Location> {
         val q = raw.trim().lowercase()
-        if (q.isEmpty()) return all
+        if (q.isBlank()) return all
+
+        val prefixHits = tokenIndex.entries
+            .filter { it.key.startsWith(q) }
+            .flatMap { it.value }
+            .distinct()
+
+        if (prefixHits.isNotEmpty()) return prefixHits.toTypedArray()
 
         val hits = all.mapNotNull { loc ->
             val score = when {
-                loc.codes.any { it.lowercase() == q } -> 0
-                loc.corpus.contains(q)                -> 1
-                matches(q, loc.corpus)                -> 2
-                else                                  -> return@mapNotNull null
+                loc.codes.any { it.lowercase().contains(q) } -> 1
+                loc.corpus.contains(q) -> 2
+                matches(q, loc.corpus) -> 3
+                else -> return@mapNotNull null
             }
             score to loc
         }
